@@ -7,6 +7,7 @@ class Observation (object):
 		self._band = band
 		self._obs_number = obs_number
 
+
 	@property
 	def source():
 		return _source
@@ -40,14 +41,13 @@ if __name__ == '__main__':
 	print(obs.generate_prefix())
 
 
-
-
 class FileLocations(object):
-	def __init__(self, tape_path, staging_path, processing_path):
+	def __init__(self, tape_path, tape_machine, staging_path, staging_machine,  processing_path):
 		self._tape_path = tape_path
 		self._staging_path = staging_path
 		self._processing_path = staging_path
-
+		self._tape_machine = tape_machine
+		self._staging_machine = staging_machine
 
 	@property
 	def tape_path():
@@ -60,6 +60,17 @@ class FileLocations(object):
 	@property
 	def processing_path():
 		return _processing_path
+
+	@property
+	def tape_machine():
+		return _tape_machine
+
+	@property
+	def staging_machine():
+		return _staging_machine
+
+
+
 
 
 class PrestoConfig(object):
@@ -144,6 +155,7 @@ class PeasoupConfig(object):
 		return _do_zero_acc_birdies
 
 
+
 class PulsarXConfig(object):
 	def __init__(self, singularity_image, do_zero_dm_filter, pulsarX_flags):
 		self._singularity_image = singularity_image		
@@ -188,13 +200,14 @@ class SlurmConfig(object):
 
 
 class Config():
-	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file):
+	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list):
 		self._file_locations = file_locations
 		self._presto_config = presto_config
 		self._peasoup_config = peasoup_config
 		self._pulsarX_config = pulsarX_config
 		self._slurm_config = slurm_config
 		self._dm_file = dm_file
+		self._beam_list = beam_list
 
 
 	@property
@@ -204,7 +217,7 @@ class Config():
 	@property
 	def presto_config():
 		return _presto_config
-		
+
 	@property
 	def peasoup_config():
 		return _peasoup_config
@@ -220,4 +233,8 @@ class Config():
 	@property
 	def dm_file():
 		return _dm_file
+
+	@property
+	def beam_list:
+		return _beam_list
 
