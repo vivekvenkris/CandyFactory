@@ -1,0 +1,15 @@
+
+STATUS_DICT ={
+	"00_INIT": "0", 
+	"01_RSYNC_1": "1", 
+	"02_RSYNC_2": "2", 
+	"03_ZERO_DM_FILTER": "3", 
+	"04_RFIFIND_MASK": "4", 
+	"05_ZERO_DM_ACCELSEARCH": "5", 
+	"06_DD_PLAN": "6", 
+	"07_PEASOUP_ZERO_ACC": "7", 
+	"08_BIRDIES_ZERO_ACC": "8", 
+	"09_PESOUP_ACC": "9", 
+	"10_FOLDING": "10", 
+
+}

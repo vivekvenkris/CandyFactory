@@ -200,7 +200,7 @@ class SlurmConfig(object):
 
 
 class Config():
-	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list):
+	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
 		self._file_locations = file_locations
 		self._presto_config = presto_config
 		self._peasoup_config = peasoup_config
@@ -208,6 +208,7 @@ class Config():
 		self._slurm_config = slurm_config
 		self._dm_file = dm_file
 		self._beam_list = beam_list
+		self._max_beams_on_processing_disk = max_beams_on_processing_disk
 
 
 	@property
@@ -237,4 +238,8 @@ class Config():
 	@property
 	def beam_list:
 		return _beam_list
+
+	@property
+	def max_beams_on_processing_disk():
+		return _max_beams_on_processing_disk;
 
