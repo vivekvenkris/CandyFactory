@@ -22,7 +22,8 @@ BIRDIES_PATH /birdies/bird     #Path to file with a list of birdies; Else defaul
 ZAPMASK_PATH /zappies/zap        #Path to file with PEASOUP compatible channel mask 
 PULSARX_ZERODM_MATCHED_FILTER  /dsfsdf/sdfsdf   # Flag for applying zero DM filter (1 - Apply, 0- ignore)
 ACCELSEARCH_BIRDIES 0    # Flag for generating birdies using zero acceleration accelsearch (1 - Apply, 0- ignore)
-ZERODM_ACCELSEARCH_BIRDIES 1 # Flag for running zero acceleration peasoup to update birdie list
+ACCELSEARCH_FLAGS        # Ncpus, zmax and wmax are already fixed. Do not specify.  
+MULTIBEAM_ACCELSEARCH_BIRDIES 1 # Flag for running zero acceleration peasoup to update birdie list
 ZAPMASK_RFIFIND  0       # Flag for generating RFI mask from RFIFIND (1- Generate, 0-ignore) 
 
 #RFIFIND_PARAMETERS
@@ -52,8 +53,10 @@ SCALE_ACC_WITH_SEGMENTS    # FScale acceleration values based on segment lengths
 
 #PulsarX
 NSUBINT_FOLD 32                   # Number of subints in folded archive
-NBIN_FOLD   64                    # Number of bins in folded profile 
+NBIN_FOLD_FAST   64                    # Number of bins in folded profile for fast candidates (P < 100 ms)
+NBIN_FOLD_SLOW   128                  # Number of bins in folded profile for slow candidates (P > 100 ms)  
 NCHAN_FOLD  32                    # Number of channels in folded archive
+ADDITIONAL_PULSARX_FLAGS          # Additional flags for pulsarX folding 
 
 
 #IMAGE_NAMES
