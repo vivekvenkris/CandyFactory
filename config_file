@@ -1,75 +1,75 @@
 #######   CONFIG FILE  ##############
 
 #Hercules paths
-TAPE_PATH /archive/test       #Path on Hercules archive to retrieve data from  
-TAPE_MACHINE   archive
-STAGING_PATH   /mkfs/00/Terzan5     # Path on the MeerKAT filesystem (mkfs) to store data   
-STAGING_MACHINE 127.0.0.1 
-PROCESSING_PATH /hercules/test     # Path on Hercules to transfer file from mkfs 
+TAPE_PATH 		/archive/test       #Path on Hercules archive to retrieve data from  
+TAPE_MACHINE   		archive
+STAGING_PATH   		/mkfs/00/Terzan5     # Path on the MeerKAT filesystem (mkfs) to store data   
+STAGING_MACHINE 	127.0.0.1 
+PROCESSING_PATH 	/hercules/test     # Path on Hercules to transfer file from mkfs 
 
 
 #SEARCH IDENTIFIERS
-SOURCE Terzan5     # Name of source 
-NBEAMS 288         # Numnber of beams to process for a given epoch
-OBS_NO 02          # Observation number for paticular source
-BAND  L            # Frequency band os observation (e.g. UHF, L-Band, S-Band)   
-BEAM_LIST  0,5,6   # Comma separated values of beam numbers to process   
+SOURCE 		Terzan5     # Name of source 
+NBEAMS 		288         # Numnber of beams to process for a given epoch
+OBS_NO 		02          # Observation number for paticular source
+BAND  		L           # Frequency band os observation (e.g. UHF, L-Band, S-Band)   
+BEAM_LIST  	0,5,6       # Comma separated values of beam numbers to process   
 
 
 
 #BIRDIES and ZAPMASKS
-BIRDIES_PATH /birdies/bird     #Path to file with a list of birdies; Else default birdies list will be used  
-ZAPMASK_PATH /zappies/zap        #Path to file with PEASOUP compatible channel mask 
-PULSARX_ZERODM_MATCHED_FILTER  /dsfsdf/sdfsdf   # Flag for applying zero DM filter (1 - Apply, 0- ignore)
-ACCELSEARCH_BIRDIES 0    # Flag for generating birdies using zero acceleration accelsearch (1 - Apply, 0- ignore)
-ACCELSEARCH_FLAGS        # Ncpus, zmax and wmax are already fixed. Do not specify.  
-MULTIBEAM_ACCELSEARCH_BIRDIES 1 # Flag for running zero acceleration peasoup to update birdie list
-ZAPMASK_RFIFIND  0       # Flag for generating RFI mask from RFIFIND (1- Generate, 0-ignore) 
+BIRDIES_PATH 				/birdies/bird   #Path to file with a list of birdies; Else default birdies list will be used  
+ZAPMASK_PATH 				/zappies/zap    #Path to file with PEASOUP compatible channel mask 
+PULSARX_ZERODM_MATCHED_FILTER  		/dsfsdf/sdfsdf  # Flag for applying zero DM filter (1 - Apply, 0- ignore)
+ACCELSEARCH_BIRDIES 			0    		# Flag for generating birdies using zero acceleration accelsearch (1 - Apply, 0- ignore)
+ACCELSEARCH_FLAGS        				# Ncpus, zmax and wmax are already fixed. Do not specify.  
+MULTIBEAM_ACCELSEARCH_BIRDIES 1 			# Flag for running zero acceleration peasoup to update birdie list
+ZAPMASK_RFIFIND  0       				# Flag for generating RFI mask from RFIFIND (1- Generate, 0-ignore) 
 
 #RFIFIND_PARAMETERS
-RFIFIND_TIME                   # time range for calculating RFI stats (-time option)
-RFIFIND_CHANS_TO_ZAP           # List of channels to zap in RFIFIND mask
-RFIFIND_TIME_INTERVALS_TO_ZAP  # List of time intervals to zap in the RFIFIND mask
-RFIFIND_INTFRAC   0.05         # Value for RFIFIND -intfrac option
-RFIFIND_CHANFRAC  0.7          # Value for RFIFIND -chanfrac option
-RFIFIND_TIMESIG   10.0         # Time sigma threshold
-RFIFIND_FREQSIG   6.0          # Frequency sigma threshold
-IGNORECHAN_LIST                # List of channels to ignore from analysis (-ignorechan PRESTO)
+RFIFIND_TIME                   		     # time range for calculating RFI stats (-time option)
+RFIFIND_CHANS_TO_ZAP           		     # List of channels to zap in RFIFIND mask
+RFIFIND_TIME_INTERVALS_TO_ZAP  		     # List of time intervals to zap in the RFIFIND mask
+RFIFIND_INTFRAC   		0.05         # Value for RFIFIND -intfrac option
+RFIFIND_CHANFRAC  		0.7          # Value for RFIFIND -chanfrac option
+RFIFIND_TIMESIG   		10.0         # Time sigma threshold
+RFIFIND_FREQSIG   		6.0          # Frequency sigma threshold
+IGNORECHAN_LIST                		     # List of channels to ignore from analysis (-ignorechan PRESTO)
 
 
 #PEASOUP INPUTS
-DDPLAN 0                   # Flag to generate a DM list based on DDplan and filterbank inputs (1-Generate, 0-ignore) 
-COHERENT_DM 237            # reference DM value if coherently dedispersed for DDplan
-DM_MIN 225                 # Minimum DM for DDplan
-DM_MAX 250                 # Max DM for DDplan
-N_SUBBANDS 256              # Number of Subbands for DDplan
-DM_FILE /dmfile/dm.file    # Path to PEASOUP compatible file with list of DM trials (Use if DDplan not applied)
-ACC_MIN -25                # Min acceleration 
-ACC_MAX 25                 # Max acceleration
-LIST_SEGMENTS full,20,50   # Comma separated lengths (in minutes) of chunks to search (e.g. full,10,30)
-START_OFFSET               # Ignore n fraction of data (Not working currently)
-SCALE_ACC_WITH_SEGMENTS    # FScale acceleration values based on segment lengths (Not working currently)
+DDPLAN 				0                   # Flag to generate a DM list based on DDplan and filterbank inputs (1-Generate, 0-ignore) 
+COHERENT_DM 			237            # reference DM value if coherently dedispersed for DDplan
+DM_MIN 				225                 # Minimum DM for DDplan
+DM_MAX 				250                 # Max DM for DDplan
+N_SUBBANDS 			256              # Number of Subbands for DDplan
+DM_FILE 			/dmfile/dm.file    # Path to PEASOUP compatible file with list of DM trials (Use if DDplan not applied)
+ACC_MIN 			-25                # Min acceleration 
+ACC_MAX 			25                 # Max acceleration
+LIST_SEGMENTS 			full,20,50   # Comma separated lengths (in minutes) of chunks to search (e.g. full,10,30)
+START_OFFSET               			# Ignore n fraction of data (Not working currently)
+SCALE_ACC_WITH_SEGMENTS    			# FScale acceleration values based on segment lengths (Not working currently)
 
 
 #PulsarX
-NSUBINT_FOLD 32                   # Number of subints in folded archive
-NBIN_FOLD_FAST   64                    # Number of bins in folded profile for fast candidates (P < 100 ms)
-NBIN_FOLD_SLOW   128                  # Number of bins in folded profile for slow candidates (P > 100 ms)  
-NCHAN_FOLD  32                    # Number of channels in folded archive
-ADDITIONAL_PULSARX_FLAGS          # Additional flags for pulsarX folding 
+NSUBINT_FOLD 			32                  # Number of subints in folded archive
+NBIN_FOLD_FAST   		64                  # Number of bins in folded profile for fast candidates (P < 100 ms)
+NBIN_FOLD_SLOW   		128                 # Number of bins in folded profile for slow candidates (P > 100 ms)  
+NCHAN_FOLD  			32                  # Number of channels in folded archive
+ADDITIONAL_PULSARX_FLAGS          		    # Additional flags for pulsarX folding 
 
 
 #IMAGE_NAMES
-PEASOUP_IMAGE /peasoup   # Path to the peasoup singularity image
-PRESTO_IMAGE /presto     # Path to the PRESTO singularity image
-PULSARX_IMAGE /pulsarx   # Path to the PulsarX singularity image
+PEASOUP_IMAGE 			/peasoup   # Path to the peasoup singularity image
+PRESTO_IMAGE 			/presto     # Path to the PRESTO singularity image
+PULSARX_IMAGE 			/pulsarx   # Path to the PulsarX singularity image
 
 
 #SLURM INPUTS
-N_SIMULTANEOUS_JOBS 15            # Number if simultaneous jobs to run with job array  
-PARTITION short.q                 # Type of queue to use
-MAIL_USER prajwalvp@mpifr-bonn.mpg.de    # EMAIL ID to send notification
-MAIL_TYPE ALL                  # Type of job status to send via EMAIL (e.g. ALL, FAIL, SUCCESS)
+N_SIMULTANEOUS_JOBS 		15            # Number if simultaneous jobs to run with job array  
+PARTITION 			short.q                 # Type of queue to use
+MAIL_USER 			prajwalvp@mpifr-bonn.mpg.de    # EMAIL ID to send notification
+MAIL_TYPE 			ALL                  # Type of job status to send via EMAIL (e.g. ALL, FAIL, SUCCESS)
 
 
 #OUTPUT 
