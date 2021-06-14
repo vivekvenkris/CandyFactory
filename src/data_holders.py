@@ -74,12 +74,13 @@ class FileLocations(object):
 
 
 class PrestoConfig(object):
-	def __init__(self, singularity_image, rfifind_flags, ddplan_flags, accelsearch_flags):
+	def __init__(self, singularity_image, singularity_flags, rfifind_flags, ddplan_flags, accelsearch_flags):
 
 		self.__singularity_image = singularity_image
 		self.__rfifind_flags = rfifind_flags
 		self.__accelsearch_flags = accelsearch_flags
 		self.__ddplan_flags = ddplan_flags
+		self.__singularity_flags = singularity_flags
 
 
 	@property
@@ -97,6 +98,10 @@ class PrestoConfig(object):
 	@property 
 	def rfifind_flags:
 		return __rfifind_flags
+
+	@property
+	def singularity_flags(self):
+		return self.__singularity_flags
 
 
 class SegmentConfig(object):
@@ -121,7 +126,7 @@ class SegmentConfig(object):
 
 
 class PeasoupConfig(object):
-	def __init__(self, singularity_image, segment_configs, start_offset, end_offset, do_zero_acc_birdies):
+	def __init__(self, singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags):
 		self.__singularity_image = singularity_image
 		self.__segment_list = segment_list
 		self.__acc_start = acc_start
@@ -129,6 +134,8 @@ class PeasoupConfig(object):
 		self.__start_offset = start_offset
 		self.__segment_configs = segment_configs
 		self.__do_zero_acc_birdies = do_zero_acc_birdies
+		self.__peasoup_flags = peasoup_flags
+		self.__singularity_flags = singularity_flags
 
 	@property
 	def singularity_image():
@@ -151,14 +158,25 @@ class PeasoupConfig(object):
 	def end_offset():
 		return __end_offset
 
+	@property
+	def peasoup_flags(self):
+		return self.__peasoup_flags
+
+	@property
+	def singularity_flags(self):
+		return self.__singularity_flags
+	
+	
+
 
 class PulsarXConfig(object):
-	def __init__(self, singularity_image, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
+	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
 		self.__singularity_image = singularity_image		
 		self.__do_zero_dm_filter = do_zero_dm_filter
 		self.__pulsarX_flags = pulsarX_flags
 		self.__fast_nbin = fast_nbin
 		self.__slow_nbin = slow_nbin
+		self.__singularity_flags = singularity_flags
 
 	@property
 	def singularity_image():
@@ -179,6 +197,10 @@ class PulsarXConfig(object):
 	@property
 	def slow_nbin():
 		return __slow_nbin
+
+	@property
+	def singularity_flags(self):
+		return self.__singularity_flags
 
 
 class SlurmConfig(object):
@@ -205,7 +227,7 @@ class SlurmConfig(object):
 		return __mail_user
 
 class Config():
-	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_files, beam_list, max_beams_on_processing_disk):
+	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
 		self.__file_locations = file_locations
 		self.__presto_config = presto_config
 		self.__peasoup_config = peasoup_config
