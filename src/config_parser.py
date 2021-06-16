@@ -30,7 +30,7 @@ class Configuration(object):
 
     def generate_ddplan_flags(self):
 
-         return "-l {} -d {} -c {} -s {}".format(self.dict_process_config['DM_MIN'], self.dict_process_config['DM_MAX'], self.dict_process_config['DM_COHERENT_DEDISPERSION'], self.dict_process_config['N_SUBBANDS'])  
+         return "-l {} -d {} -c {} -s {}".format(self.dict_process_config['DM_MIN'], self.dict_process_config['DM_MAX'], self.dict_process_config['COHERENT_DM'], self.dict_process_config['N_SUBBANDS'])  
 
      
     def generate_rfifind_flags(self):
