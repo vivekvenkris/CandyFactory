@@ -28,12 +28,12 @@ class Configuration(object):
         return flag +" "+ value if value.strip("\\s+") != "" else ""
 
 
-    def generate_ddplan_flags():
+    def generate_ddplan_flags(self):
 
          return "-l {} -d {} -c {} -s {}".format(self.dict_process_config['DM_MIN'], self.dict_process_config['DM_MAX'], self.dict_process_config['DM_COHERENT_DEDISPERSION'], self.dict_process_config['N_SUBBANDS'])  
 
      
-    def generate_rfifind_flags():
+    def generate_rfifind_flags(self):
 
         zapint_flag = get_value_if_exists("-zapints", self.dict_process_config['RFIFIND_TIME_INTERVALS_TO_ZAP'])
         chanzap_flag = get_value_if_exists("-zapchan", self.dict_process_config['RFIFIND_CHANS_TO_ZAP'])
@@ -44,7 +44,7 @@ class Configuration(object):
 
         return zapint_flag + chanzap_flag + time_stats_flag + ignorechan_flag +timesig_flag + freqsig_flag
           
-    def generate_accelsearch_flags():
+    def generate_accelsearch_flags(self):
         accelsearch_flags = self.dict_process_config['ACCELSEARCH_FLAGS'] 
 
         if "zmax" in accelsearch_flags or "wmax" in accelsearch_flags or "ncpus" in accelsearch_flags:
@@ -54,9 +54,9 @@ class Configuration(object):
         return  accelsearch_flags
 
 
-    def get_acc_range_and_segment_fraction(ACC_SEGMENT_LIST):
+    def get_acc_range_and_segment_fraction(self):
         seg_configs = []
-        for i in ACC_SEGMENT_LIST.strip().split(","):
+        for i in self.dict_process_config['ACC_SEGMENT_LIST'].strip().split(","):
             acc_start, acc_end, seg_length = i.strip().split(":")
             seg_length = 1 if "full" in seg_length else seg_length
 
@@ -95,7 +95,7 @@ class Configuration(object):
                                                     self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
 
 
-        all_segment_configs = get_acc_range_and_segment_fraction(self.dict_process_config['ACC_SEGMENT_LIST'])
+        all_segment_configs = get_acc_range_and_segment_fraction()
 
 
         observations =  Observation(self.dict_process_config['SOURCE'],
