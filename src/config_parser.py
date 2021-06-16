@@ -24,7 +24,7 @@ class Configuration(object):
             f.write(line)
 
 
-    def get_value_if_exists(flag, value):
+    def get_value_if_exists(self, flag, value):
         return flag +" "+ value if value.strip("\\s+") != "" else ""
 
 
