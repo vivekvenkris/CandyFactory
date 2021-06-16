@@ -133,7 +133,7 @@ class SegmentConfig(object):
 class PeasoupConfig(object):
 	def __init__(self, singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags):
 		self.__singularity_image = singularity_image
-		self.__segment_list = segment_list
+		self.__segment_configs = segment_configs
 		self.__acc_start = acc_start
 		self.__acc_end = acc_end
 		self.__start_offset = start_offset
