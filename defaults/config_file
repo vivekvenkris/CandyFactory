@@ -24,24 +24,24 @@ BIRDIES_PATH 				/birdies/bird   #Path to file with a list of birdies; Else defa
 ZAPMASK_PATH 				/zappies/zap    #Path to file with PEASOUP compatible channel mask 
 PULSARX_ZERODM_MATCHED_FILTER  		/dsfsdf/sdfsdf  # Flag for applying zero DM filter (1 - Apply, 0- ignore)
 ACCELSEARCH_BIRDIES 			0    		# Flag for generating birdies using zero acceleration accelsearch (1 - Apply, 0- ignore)
-ACCELSEARCH_FLAGS        				# Ncpus, zmax and wmax are already fixed. Do not specify.  
+ACCELSEARCH_FLAGS        		""		# Ncpus, zmax and wmax are already fixed. Do not specify.  
 MULTIBEAM_ACCELSEARCH_BIRDIES 1 			# Flag for running zero acceleration peasoup to update birdie list
 ZAPMASK_RFIFIND  0       				# Flag for generating RFI mask from RFIFIND (1- Generate, 0-ignore) 
 
 #RFIFIND_PARAMETERS
-RFIFIND_TIME                   		     # time range for calculating RFI stats (-time option)
-RFIFIND_CHANS_TO_ZAP           		     # List of channels to zap in RFIFIND mask
-RFIFIND_TIME_INTERVALS_TO_ZAP  		     # List of time intervals to zap in the RFIFIND mask
+RFIFIND_TIME             2.0     		     # time range for calculating RFI stats (-time option)
+RFIFIND_CHANS_TO_ZAP      ""   		     # List of channels to zap in RFIFIND mask
+RFIFIND_TIME_INTERVALS_TO_ZAP "" 		     # List of time intervals to zap in the RFIFIND mask
 RFIFIND_INTFRAC   		0.05         # Value for RFIFIND -intfrac option
 RFIFIND_CHANFRAC  		0.7          # Value for RFIFIND -chanfrac option
 RFIFIND_TIMESIG   		10.0         # Time sigma threshold
 RFIFIND_FREQSIG   		6.0          # Frequency sigma threshold
-IGNORECHAN_LIST                		     # List of channels to ignore from analysis (-ignorechan PRESTO)
+IGNORECHAN_LIST          ""      		     # List of channels to ignore from analysis (-ignorechan PRESTO)
 
 
 #PEASOUP INPUTS
 DDPLAN 				0                   # Flag to generate a DM list based on DDplan and filterbank inputs (1-Generate, 0-ignore) 
-COHERENT_DM 			237            # reference DM value if coherently dedispersed for DDplan
+COHERENT_DM 		237            # reference DM value if coherently dedispersed for DDplan
 DM_MIN 				225                 # Minimum DM for DDplan
 DM_MAX 				250                 # Max DM for DDplan
 N_SUBBANDS 			256              # Number of Subbands for DDplan
@@ -49,8 +49,8 @@ DM_FILE 			/dmfile/dm.file    # Path to PEASOUP compatible file with list of DM 
 #ACC_MIN 			-25                # Min acceleration 
 #ACC_MAX 			25                 # Max acceleration
 ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5, # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
-START_OFFSET               			# Ignore n fraction of data at start 
-END_OFFSET                        # Ignore n fraction of data from end of file                  
+START_OFFSET        0       			# Ignore n fraction of data at start 
+END_OFFSET          0             # Ignore n fraction of data from end of file                  
 PEASOUP_FLAGS            "-m 8.5 -n 3 --limit 1000"            # Other flags for peasoup 
 
 
@@ -76,5 +76,3 @@ MAIL_TYPE 			ALL                  # Type of job status to send via EMAIL (e.g. A
 
 
 #OUTPUT 
-
-OUTPUT_PATH                       # Path where outputs will be stored

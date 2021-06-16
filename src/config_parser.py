@@ -75,8 +75,8 @@ class Configuration(object):
         
         singularity_flags = "-B {}:{} -B {}:{}".format(self.dict_process_config['PROCESSING_PATH'], 
                                                     self.dict_process_config['PROCESSING_PATH'],
-                                                    self.dict_process_config['OUTPUT_PATH'],
-                                                    self.dict_process_config['OUTPUT_PATH'])
+                                                    self.dict_process_config['ROOT'],
+                                                    self.dict_process_config['ROOT'])
 
         pulsarX_flags = " -L {} -n {} -b {}".format(self.dict_process_config['NSUBINT_FOLD'],
                                                     self.dict_process_config['NCHAN_FOLD'],
