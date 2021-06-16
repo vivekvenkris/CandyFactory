@@ -147,6 +147,7 @@ class PeasoupConfig(object):
 		self.__do_zero_acc_birdies = do_zero_acc_birdies
 		self.__peasoup_flags = peasoup_flags
 		self.__singularity_flags = singularity_flags
+		self.__end_offset = end_offset
 
 	@property
 	def singularity_image(self):
