@@ -53,6 +53,17 @@ class Configuration(object):
 
         return  accelsearch_flags
 
+
+    def get_acc_range_and_segment_fraction(ACC_SEGMENT_LIST):
+        seg_configs = []
+        for i in ACC_SEGMENT_LIST.strip().split(","):
+            acc_start, acc_end, seg_length = i.strip().split(":")
+            seg_length = 1 if "full" in seg_length else seg_length
+
+            seg_config = SegmentConfig(seg_length, acc_start, acc_end)
+            seg_configs = seg_configs.append(seg_config)
+
+        return seg_configs
           
 
 
@@ -84,10 +95,7 @@ class Configuration(object):
                                                     self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
 
 
-        all_segment_configs = []
-
-
-        get_acc_range_and_segment_fraction(self.dict_process_config['ACC_SEGMENT_LIST'])
+        all_segment_configs = get_acc_range_and_segment_fraction(self.dict_process_config['ACC_SEGMENT_LIST'])
 
 
         observations =  Observation(self.dict_process_config['SOURCE'],
