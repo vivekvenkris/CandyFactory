@@ -3,7 +3,7 @@ from log import Logger, init_logging
 import logging
 import random, time, datetime
 from rsyncer import Rsyncer
-from config_parser import Configuration
+from config_parser import ConfigurationReader
 import os, sys
 from ledger import Ledger
 from exceptions import IncorrectInputsException
