@@ -59,7 +59,6 @@ class Configuration(object):
         for i in self.dict_process_config['ACC_SEGMENT_LIST'].strip().split(","):
             acc_start, acc_end, seg_length = i.strip().split(":")
             seg_length = 1 if "full" in seg_length else seg_length
-
             seg_config = SegmentConfig(seg_length, acc_start, acc_end)
             seg_configs = seg_configs.append(seg_config)
 
@@ -77,7 +76,7 @@ class Configuration(object):
 
         for line in config_file:
             if line != "\n" and (not line.startswith("#")):
-                chunks = line.split('#')[0].split()
+                chunks = line.split('#')[0].split(None,1)
                 key = chunks[0]
                 val = chunks[1] if len(chunks) > 1 else ""
                 self.dict_process_config[key] = val      #Save parameter key and value in the dictionary 
