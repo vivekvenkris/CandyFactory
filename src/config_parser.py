@@ -79,9 +79,10 @@ class Configuration(object):
                                                     self.dict_process_config['ROOT'],
                                                     self.dict_process_config['ROOT'])
 
-        pulsarX_flags = " -L {} -n {} -b {}".format(self.dict_process_config['NSUBINT_FOLD'],
+        pulsarX_flags = " -L {} -n {} -b {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
                                                     self.dict_process_config['NCHAN_FOLD'],
-                                                    self.dict_process_config['NBIN_FOLD'])
+                                                    self.dict_process_config['NBIN_FOLD'], 
+                                                    self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
 
 
         all_segment_configs = []
@@ -123,10 +124,9 @@ class Configuration(object):
         pulsarX_config =  PulsarXConfig( self.dict_process_config['PULSARX_IMAGE'],
                                      singularity_flags,
                                      self.dict_process_config['PULSARX_ZERODM_MATCHED_FILTER'],
-                                     self.dict_process_config['NSUBINT_FOLD'], 
-                                     self.dict_process_config['NBIN_FOLD'],
-                                     self.dict_process_config['NCHAN_FOLD'],
-                                     self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'])
+                                     pulsarX_flags, 
+                                     self.dict_process_config['NBIN_FOLD_FAST'],
+                                     self.dict_process_config['NBIN_FOLD_SLOW'])
 
 
     
