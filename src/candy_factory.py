@@ -38,7 +38,7 @@ def main():
         try:
             pathlib.Path(args.init).mkdir(parents=True, exist_ok=False)
             os.chdir(args.init)
-            Configuration.init_default()
+            ConfigurationReader.init_default()
             for i in ["known_pulsars"]:
                 os.mkdir(i)
             sys.exit(os.EX_OK)
