@@ -35,12 +35,12 @@ class Configuration(object):
      
     def generate_rfifind_flags(self):
 
-        zapint_flag = get_value_if_exists("-zapints", self.dict_process_config['RFIFIND_TIME_INTERVALS_TO_ZAP'])
-        chanzap_flag = get_value_if_exists("-zapchan", self.dict_process_config['RFIFIND_CHANS_TO_ZAP'])
-        time_stats_flag = get_value_if_exists("-time",self.dict_process_config['RFIFIND_TIME']) 
-        ignorechan_flag = get_value_if_exists("-ignorechan", self.dict_process_config['IGNORECHAN_LIST'])
-        timesig_flag = get_value_if_exists("-timesig", self.dict_process_config['RFIFIND_TIMESIG'])
-        freqsig_flag = get_value_if_exists("-freqsig", self.dict_process_config['RFIFIND_FREQSIG'])
+        zapint_flag = self.get_value_if_exists("-zapints", self.dict_process_config['RFIFIND_TIME_INTERVALS_TO_ZAP'])
+        chanzap_flag = self.get_value_if_exists("-zapchan", self.dict_process_config['RFIFIND_CHANS_TO_ZAP'])
+        time_stats_flag = self.get_value_if_exists("-time",self.dict_process_config['RFIFIND_TIME']) 
+        ignorechan_flag = self.get_value_if_exists("-ignorechan", self.dict_process_config['IGNORECHAN_LIST'])
+        timesig_flag = self.get_value_if_exists("-timesig", self.dict_process_config['RFIFIND_TIMESIG'])
+        freqsig_flag = self.get_value_if_exists("-freqsig", self.dict_process_config['RFIFIND_FREQSIG'])
 
         return zapint_flag + chanzap_flag + time_stats_flag + ignorechan_flag +timesig_flag + freqsig_flag
           
