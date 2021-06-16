@@ -69,6 +69,14 @@ class FileLocations(object):
 	def staging_machine(self):
 		return __staging_machine
 
+	def __str__(self):
+		return "tape_path {} \n tape_machine {} \n staging_path {} \n staging_machine {} \n  processing_path {} \n".format(self.tape_path, self.tape_machine, self.staging_path, 
+											self.staging_machine,  self.processing_path)
+
+	def __repr__(self):
+		return __str__()
+
+
 class PrestoConfig(object):
 	def __init__(self, singularity_image, singularity_flags, rfifind_flags, ddplan_flags, accelsearch_flags):
 
@@ -100,7 +108,7 @@ class PrestoConfig(object):
 		return self.__singularity_flags
 
 	def __str__(self):
-		return "singularity_image: {} \n singularity_flags: {} \n rfifind_flags: {} \n ddplan_flags: {} \n accelsearch_flags".format(singularity_image, singularity_flags, rfifind_flags, ddplan_flags, accelsearch_flags)
+		return "singularity_image: {} \n singularity_flags: {} \n rfifind_flags: {} \n ddplan_flags: {} \n accelsearch_flags".format(self.singularity_image, self.singularity_flags, self.rfifind_flags, self.ddplan_flags, self.accelsearch_flags)
 
 	def __repr__(self):
 		return __str__()
@@ -125,7 +133,7 @@ class SegmentConfig(object):
 		return _acc_end
 
 	def __str__(self):
-		return "fractional_segment_length: {} \n acc_start: {} \n acc_end: {} \n".format(fractional_segment_length, acc_start, acc_end)
+		return "fractional_segment_length: {} \n acc_start: {} \n acc_end: {} \n".format(self.fractional_segment_length, self.acc_start, self.acc_end)
 
 	def __repr__(self):
 		return __str__()
@@ -169,7 +177,7 @@ class PeasoupConfig(object):
 		return self.__singularity_flags
 	
 	def __str__(self):
-		return "singularity_image: {} \n singularity_flags: {} \n segment_configs: {} \n start_offset: {} \n end_offset: {} \n do_zero_acc_birdies: {} \n peasoup_flags: {} \n".format(singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags)
+		return "singularity_image: {} \n singularity_flags: {} \n segment_configs: {} \n start_offset: {} \n end_offset: {} \n do_zero_acc_birdies: {} \n peasoup_flags: {} \n".format(self.singularity_image, self.singularity_flags, self.segment_configs, self.start_offset, self.end_offset, self.do_zero_acc_birdies, self.peasoup_flags)
 
 	def __repr__(self):
 		return __str__()
@@ -208,7 +216,7 @@ class PulsarXConfig(object):
 		return self.__singularity_flags
 
 	def __str__(self):
-		return "singularity_image: {} \n singularity_flags: {} \n do_zero_dm_filter: {} \n pulsarX_flags: {} \n fast_nbin: {} \n slow_nbin: {} \n".format(singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin)
+		return "singularity_image: {} \n singularity_flags: {} \n do_zero_dm_filter: {} \n pulsarX_flags: {} \n fast_nbin: {} \n slow_nbin: {} \n".format(self.singularity_image, self.singularity_flags, self.do_zero_dm_filter, self.pulsarX_flags, self.fast_nbin, self.slow_nbin)
 
 	def __repr__(self):
 		return __str__()
@@ -237,7 +245,7 @@ class SlurmConfig(object):
 		return __mail_user
 
 	def __str__(self):
-		return " num_simultaneous_jobs {} \n partition {} \n mail_user {}  \n mail_type {} \n".format(num_simultaneous_jobs, partition, mail_user, mail_type)
+		return " num_simultaneous_jobs {} \n partition {} \n mail_user {}  \n mail_type {} \n".format(self.num_simultaneous_jobs, self.partition, self.mail_user, self.mail_type)
 
 	def __repr__(self):
 		return __str__()
@@ -289,7 +297,7 @@ class Config(object):
 
 	def __str__(self):
 		return "\n Configurations: \n File locations: {} Presto config: {} \n PulsarX config: {} \n, Slurm config: {} \n dm_file: {} \n beam_list: {} \n \
-			max_beams_on_processing_disk: {}".format(file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk)
+			max_beams_on_processing_disk: {}".format(self.file_locations,self.presto_config, self.peasoup_config, self.pulsarX_config, self.slurm_config, self.dm_file, self.beam_list, self.max_beams_on_processing_disk)
 
 	def __repr__(self):
 		return __str__()
