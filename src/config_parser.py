@@ -16,8 +16,12 @@ class Configuration(object):
         dest = os.path.join(cwd, "default.cfg")
         file_path=Path(__file__)
         src = os.path.join(file_path.parent.parent, "defaults", "config_file")
-        copyfile(src, dest)
+        line = None
+        with open(src) as f:
+            line = f.read().replace("<ROOT_OUTPUT_DIR>", os.path.basename(cwd))
 
+        with open(dest, "w") as f:
+            f.write(line)
 
 
     def get_value_if_exists(flag, value):
@@ -48,7 +52,6 @@ class Configuration(object):
 
 
         return  accelsearch_flags
-
 
           
 
