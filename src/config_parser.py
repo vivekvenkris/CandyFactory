@@ -143,7 +143,8 @@ class Configuration(object):
                                   self.dict_process_config['MAIL_TYPE']) 
                            
 
-        config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'])
+        config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
+            self.dict_process_config['BEAM_LIST'], self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK'])
   
 
 
