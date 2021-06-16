@@ -141,20 +141,7 @@ class Configuration(object):
                                   self.dict_process_config['PARTITION'],
                                   self.dict_process_config['MAIL_USER'],
                                   self.dict_process_config['MAIL_TYPE']) 
-
-
-        # Assign segment_fractions from lengths 
-
-
-        self.dict_process_config['LIST_SEGMENTS']
-
-        # Convert acc segment list to segment config object
-
-        configs = []
-
-        segments_config = SegmentConfig(self.dict_process_config['LIST_SEGMENTS'],
-                                        self.dict_process_config['ACC_MIN'],
-                                        self.dict_process_config['ACC_MAX'])                              
+                           
 
         config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'])
   
