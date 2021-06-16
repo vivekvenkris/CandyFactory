@@ -1,11 +1,21 @@
 import data_holders
 from  gen_utils import ensure_file_exists
-
+from shutil import copyfile
+import os
 # Fixed definitions or paths  
 PULSARX_TEMPLATE = "/home/psr/software/PulsarX/include/template/meerkat_fold.template"
 
 
 class Configuration(object):
+
+    @staticmethod
+    def init_default():
+        cwd = os.getcwd()
+        dest = os.path.join(cwd, "default.cfg")
+        src = os.path.join(os.path.dirname(__file__), "config_file")
+        copyfile(src, dest)
+
+
 
     def get_value_if_exists(flag, value):
         return flag +" "+ value if value.strip("\\s+") != "" else ""
@@ -35,6 +45,8 @@ class Configuration(object):
 
 
         return  accelsearch_flags
+
+
           
 
 
@@ -61,8 +73,8 @@ class Configuration(object):
                                                     self.dict_process_config['OUTPUT_PATH'])
 
         pulsarX_flags = " -L {} -n {} -b {}".format(self.dict_process_config['NSUBINT_FOLD'],
-                                                self.dict_process_config['NCHAN_FOLD']),
-                                                self.dict_process_config['NBIN_FOLD'])
+                                                    self.dict_process_config['NCHAN_FOLD'],
+                                                    self.dict_process_config['NBIN_FOLD'])
 
 
         all_segment_configs = []
@@ -79,21 +91,22 @@ class Configuration(object):
    
 
         presto_config = PrestoConfig(self.dict_process_config['PRESTO_IMAGE'], 
-                                  singularity_flags  
+                                  singularity_flags,  
                                   rfifind_flags,
                                   ddplan_flags,
                                   accelsearch_flags)  
 
         peasoup_config = PeasoupConfig(self.dict_process_config['PEASOUP_IMAGE'], 
                                     singularity_flags,
-                                    all_segment_configs,                                    self.dict_process_config['START_OFFSET']
-                                    self.dict_process_config['END_OFFSET']
-                                    self.dict_process_config['DO_ZERO_ACC_BIRDIES'] 
+                                    all_segment_configs,
+                                    self.dict_process_config['START_OFFSET'],
+                                    self.dict_process_config['END_OFFSET'],
+                                    self.dict_process_config['DO_ZERO_ACC_BIRDIES'], 
                                     self.dict_process_config['PEASOUP_FLAGS']
                                     ) 
 
         filelocations = FileLocations(self.dict_process_config['TAPE_PATH'],
-                                   self.dict_process_config['TAPE_MACHINE']  
+                                   self.dict_process_config['TAPE_MACHINE'],  
                                    self.dict_process_config['STAGING_PATH'], 
                                    self.dict_process_config['STAGING_MACHINE'],
                                    self.dict_process_config['PROCESSING_PATH'] 
@@ -105,7 +118,7 @@ class Configuration(object):
                                      self.dict_process_config['PULSARX_ZERODM_MATCHED_FILTER'],
                                      self.dict_process_config['NSUBINT_FOLD'], 
                                      self.dict_process_config['NBIN_FOLD'],
-                                     self.dict_process_config['NCHAN_FOLD']),
+                                     self.dict_process_config['NCHAN_FOLD'],
                                      self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'])
 
 
