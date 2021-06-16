@@ -9,6 +9,7 @@ STAGING_PATH   		/mkfs/00/Terzan5     # Path on the MeerKAT filesystem (mkfs) to
 STAGING_MACHINE 	127.0.0.1 
 PROCESSING_PATH 	/hercules/test     # Path on Hercules to transfer file from mkfs 
 
+MAX_BEAMS_ON_PROCESSING_DISK 10
 
 #SEARCH IDENTIFIERS
 SOURCE 		Terzan5     # Name of source 
@@ -16,7 +17,7 @@ NBEAMS 		288         # Numnber of beams to process for a given epoch
 OBS_NO 		02          # Observation number for paticular source
 BAND  		L           # Frequency band os observation (e.g. UHF, L-Band, S-Band)   
 BEAM_LIST  	0,5,6       # Comma separated values of beam numbers to process   
-
+TOBS 		18000
 
 
 #BIRDIES and ZAPMASKS
@@ -48,7 +49,7 @@ N_SUBBANDS 			256              # Number of Subbands for DDplan
 DM_FILE 			/dmfile/dm.file    # Path to PEASOUP compatible file with list of DM trials (Use if DDplan not applied)
 #ACC_MIN 			-25                # Min acceleration 
 #ACC_MAX 			25                 # Max acceleration
-ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5, # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
+ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5 # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
 START_OFFSET        0       			# Ignore n fraction of data at start 
 END_OFFSET          0             # Ignore n fraction of data from end of file                  
 PEASOUP_FLAGS            "-m 8.5 -n 3 --limit 1000"            # Other flags for peasoup 

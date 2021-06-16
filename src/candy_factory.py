@@ -49,8 +49,8 @@ def main():
 
 
 
-    config = Configuration(args.config)
-    print(config)
+    config_reader = ConfigurationReader("config_file") 
+    print(config_reader.config)
 
     sys.exit(0)
 

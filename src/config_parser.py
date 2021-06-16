@@ -8,7 +8,7 @@ from pathlib import Path
 PULSARX_TEMPLATE = "/home/psr/software/PulsarX/include/template/meerkat_fold.template"
 
 
-class Configuration(object):
+class ConfigurationReader(object):
 
     @staticmethod
     def init_default():
@@ -143,10 +143,12 @@ class Configuration(object):
                                   self.dict_process_config['MAIL_TYPE']) 
                            
 
-        config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
+        self.__config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
             self.dict_process_config['BEAM_LIST'], self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK'])
   
-
+    @property
+    def config(self):
+        return self.__config;
 
 
  
@@ -155,7 +157,7 @@ class Configuration(object):
 
 
 if __name__=="__main__":
-    config = Configuration("config_file") 
+    config_reader = ConfigurationReader("config_file") 
     
 
      
