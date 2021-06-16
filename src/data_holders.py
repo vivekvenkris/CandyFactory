@@ -10,27 +10,27 @@ class Observation (object):
 
 	@property
 	def source(self):
-		return __source
+		return self.__source
 
 	@property
 	def nbeam(self):
-		return __nbeam
+		return self.__nbeam
 
 	@property
 	def tobs(self):
-		return __tobs
+		return self.__tobs
 
 	@property
 	def tobs(self):
-		return __tobs
+		return self.__tobs
 
 	@property
 	def band(self):
-		return __band
+		return self.__band
 
 	@property
 	def obs_number(self):
-		return __obs_number
+		return self.__obs_number
 
 	def generate_prefix(self):
 		return "{}_{}{:02d}".format(self.__source, self.__band, self.__obs_number)
@@ -51,23 +51,23 @@ class FileLocations(object):
 
 	@property
 	def tape_path(self):
-		return __tape_path
+		return self.__tape_path
 
 	@property
 	def staging_path(self):
-		return __staging_path
+		return self.__staging_path
 
 	@property
 	def processing_path(self):
-		return __processing_path
+		return self.__processing_path
 
 	@property
 	def tape_machine(self):
-		return __tape_machine
+		return self.__tape_machine
 
 	@property
 	def staging_machine(self):
-		return __staging_machine
+		return self.__staging_machine
 
 	def __str__(self):
 		return "tape_path {} \n tape_machine {} \n staging_path {} \n staging_machine {} \n  processing_path {} \n".format(self.tape_path, self.tape_machine, self.staging_path, 
@@ -89,19 +89,19 @@ class PrestoConfig(object):
 
 	@property
 	def singularity_image(self):
-		return __singularity_image
+		return self.__singularity_image
 
 	@property 
 	def accelsearch_flags(self):
-		return __accelsearch_flags
+		return self.__accelsearch_flags
 
 	@property 
 	def ddplan_flags(self):
-		return __ddplan_flags
+		return self.__ddplan_flags
 
 	@property 
 	def rfifind_flags(self):
-		return __rfifind_flags
+		return self.__rfifind_flags
 
 	@property
 	def singularity_flags(self):
@@ -126,11 +126,11 @@ class SegmentConfig(object):
 
 	@property
 	def acc_start(self):
-		return _acc_start
+		return self.__acc_start
 
 	@property
 	def acc_end(self):
-		return _acc_end
+		return self.__acc_end
 
 	def __str__(self):
 		return "fractional_segment_length: {} \n acc_start: {} \n acc_end: {} \n".format(self.fractional_segment_length, self.acc_start, self.acc_end)
@@ -150,23 +150,23 @@ class PeasoupConfig(object):
 
 	@property
 	def singularity_image(self):
-		return __singularity_image
+		return self.__singularity_image
 
 	@property
 	def segment_configs(self):
-		return __segment_configs
+		return self.__segment_configs
 
 	@property
 	def do_zero_acc_birdies(self):
-		return __do_zero_acc_birdies
+		return self.__do_zero_acc_birdies
 
 	@property
 	def start_offset(self):
-		return __start_offset
+		return self.__start_offset
 
 	@property
 	def end_offset(self):
-		return __end_offset
+		return self.__end_offset
 
 	@property
 	def peasoup_flags(self):
@@ -193,23 +193,23 @@ class PulsarXConfig(object):
 
 	@property
 	def singularity_image(self):
-		return __singularity_image
+		return self.__singularity_image
 
 	@property
 	def do_zero_dm_filter(self):
-		return __do_zero_dm_filter
+		return self.__do_zero_dm_filter
 
 	@property
 	def pulsarX_flags(self):
-		return __pulsarX_flags	
+		return self.__pulsarX_flags	
 
 	@property
 	def fast_nbin(self):
-		return __fast_nbin
+		return self.__fast_nbin
 
 	@property
 	def slow_nbin(self):
-		return __slow_nbin
+		return self.__slow_nbin
 
 	@property
 	def singularity_flags(self):
@@ -230,19 +230,19 @@ class SlurmConfig(object):
 
 	@property
 	def num_simultaneous_jobs(self):
-		return __num_simultaneous_jobs
+		return self.__num_simultaneous_jobs
 
 	@property
 	def partition(self):
-		return __partition
+		return self.__partition
 
 	@property
 	def mail_type(self):
-		return __mail_type
+		return self.__mail_type
 
 	@property
 	def mail_user(self):
-		return __mail_user
+		return self.__mail_user
 
 	def __str__(self):
 		return " num_simultaneous_jobs {} \n partition {} \n mail_user {}  \n mail_type {} \n".format(self.num_simultaneous_jobs, self.partition, self.mail_user, self.mail_type)
@@ -264,35 +264,35 @@ class Config(object):
 
 	@property
 	def file_locations(self):
-		return __file_locations
+		return self.__file_locations
 
 	@property
 	def presto_config(self):
-		return __presto_config
+		return self.__presto_config
 
 	@property
 	def peasoup_config(self):
-		return __peasoup_config
+		return self.__peasoup_config
 
 	@property
 	def pulsarX_config(self):
-		return __pulsarX_config
+		return self.__pulsarX_config
 
 	@property
 	def slurm_config(self):
-		return __slurm_config
+		return self.__slurm_config
 
 	@property
 	def dm_file(self):
-		return __dm_file
+		return self.__dm_file
 
 	@property
 	def beam_list(self):
-		return __beam_list
+		return self.__beam_list
 
 	@property
 	def max_beams_on_processing_disk(self):
-		return __max_beams_on_processing_disk;
+		return self.__max_beams_on_processing_disk;
 
 
 	def __str__(self):
