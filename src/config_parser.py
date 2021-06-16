@@ -60,7 +60,7 @@ class Configuration(object):
             acc_start, acc_end, seg_length = i.strip().split(":")
             seg_length = 1 if "full" in seg_length else seg_length
             seg_config = SegmentConfig(seg_length, acc_start, acc_end)
-            seg_configs = seg_configs.append(seg_config)
+            seg_configs.append(seg_config)
 
         return seg_configs
           
