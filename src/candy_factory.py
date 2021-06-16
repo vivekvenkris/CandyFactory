@@ -49,7 +49,10 @@ def main():
 
 
 
-    config = parse_config(args.config)
+    config = Configuration(args.config)
+    print(config)
+
+
 
 
     ledger = Ledger()
