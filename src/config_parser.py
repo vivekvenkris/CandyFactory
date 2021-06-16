@@ -66,8 +66,9 @@ class Configuration(object):
 
         for line in config_file:
             if line != "\n" and (not line.startswith("#")):
-                key = line.split('#')[0].split(' ')[0]
-                val = line.split('#')[0].split(' ')[1]
+                chunks = line.split('#')[0].split()
+                key = chunks[0]
+                val = chunks[1] if len(chunks) > 1 else ""
                 self.dict_process_config[key] = val      #Save parameter key and value in the dictionary 
               
         config_file.close()
