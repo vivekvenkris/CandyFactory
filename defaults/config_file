@@ -1,5 +1,7 @@
 #######   CONFIG FILE  ##############
 
+ROOT	<ROOT_OUTPUT_DIR>
+
 #Hercules paths
 TAPE_PATH 		/archive/test       #Path on Hercules archive to retrieve data from  
 TAPE_MACHINE   		archive
