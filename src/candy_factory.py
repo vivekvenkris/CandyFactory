@@ -49,7 +49,7 @@ def main():
 
 
 
-    config_reader = ConfigurationReader("config_file") 
+    config_reader = ConfigurationReader(args.config) 
     print(config_reader.config)
 
     sys.exit(0)
