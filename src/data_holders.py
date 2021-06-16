@@ -9,27 +9,27 @@ class Observation (object):
 
 
 	@property
-	def source():
+	def source(self):
 		return __source
 
 	@property
-	def nbeam():
+	def nbeam(self):
 		return __nbeam
 
 	@property
-	def tobs():
+	def tobs(self):
 		return __tobs
 
 	@property
-	def tobs():
+	def tobs(self):
 		return __tobs
 
 	@property
-	def band():
+	def band(self):
 		return __band
 
 	@property
-	def obs_number():
+	def obs_number(self):
 		return __obs_number
 
 	def generate_prefix(self):
@@ -50,28 +50,24 @@ class FileLocations(object):
 		self.__staging_machine = staging_machine
 
 	@property
-	def tape_path():
+	def tape_path(self):
 		return __tape_path
 
 	@property
-	def staging_path():
+	def staging_path(self):
 		return __staging_path
 
 	@property
-	def processing_path():
+	def processing_path(self):
 		return __processing_path
 
 	@property
-	def tape_machine():
+	def tape_machine(self):
 		return __tape_machine
 
 	@property
-	def staging_machine():
+	def staging_machine(self):
 		return __staging_machine
-
-
-
-
 
 class PrestoConfig(object):
 	def __init__(self, singularity_image, singularity_flags, rfifind_flags, ddplan_flags, accelsearch_flags):
@@ -84,25 +80,30 @@ class PrestoConfig(object):
 
 
 	@property
-	def singularity_image():
+	def singularity_image(self):
 		return __singularity_image
 
 	@property 
-	def accelsearch_flags:
+	def accelsearch_flags(self):
 		return __accelsearch_flags
 
 	@property 
-	def ddplan_flags:
+	def ddplan_flags(self):
 		return __ddplan_flags
 
 	@property 
-	def rfifind_flags:
+	def rfifind_flags(self):
 		return __rfifind_flags
 
 	@property
 	def singularity_flags(self):
 		return self.__singularity_flags
 
+	def __str__(self):
+		return "singularity_image: {} \n singularity_flags: {} \n rfifind_flags: {} \n ddplan_flags: {} \n accelsearch_flags".format(singularity_image, singularity_flags, rfifind_flags, ddplan_flags, accelsearch_flags)
+
+	def __repr__(self):
+		return __str__()
 
 class SegmentConfig(object):
 	def __init__(self, fractional_segment_length, acc_start, acc_end):
@@ -112,18 +113,22 @@ class SegmentConfig(object):
 		self.__acc_end = acc_end
 
 	@property
-	def fractional_segment_length():
+	def fractional_segment_length(self):
 		return __fractional_segment_length
 
 	@property
-	def acc_start():
+	def acc_start(self):
 		return _acc_start
 
 	@property
-	def acc_end():
+	def acc_end(self):
 		return _acc_end
 
+	def __str__(self):
+		return "fractional_segment_length: {} \n acc_start: {} \n acc_end: {} \n".format(fractional_segment_length, acc_start, acc_end)
 
+	def __repr__(self):
+		return __str__()
 
 class PeasoupConfig(object):
 	def __init__(self, singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags):
@@ -138,24 +143,24 @@ class PeasoupConfig(object):
 		self.__singularity_flags = singularity_flags
 
 	@property
-	def singularity_image():
+	def singularity_image(self):
 		return __singularity_image
 
 	@property
-	def segment_configs():
+	def segment_configs(self):
 		return __segment_configs
 
 	@property
-	def do_zero_acc_birdies():
+	def do_zero_acc_birdies(self):
 		return __do_zero_acc_birdies
 
 	@property
-	def start_offset():
+	def start_offset(self):
 		return __start_offset
 
 
 	@property
-	def end_offset():
+	def end_offset(self):
 		return __end_offset
 
 	@property
@@ -166,8 +171,11 @@ class PeasoupConfig(object):
 	def singularity_flags(self):
 		return self.__singularity_flags
 	
-	
+	def __str__(self):
+		return "singularity_image: {} \n singularity_flags: {} \n segment_configs: {} \n start_offset: {} \n end_offset: {} \n do_zero_acc_birdies: {} \n peasoup_flags: {} \n".format(singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags)
 
+	def __repr__(self):
+		return __str__()
 
 class PulsarXConfig(object):
 	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
@@ -179,29 +187,34 @@ class PulsarXConfig(object):
 		self.__singularity_flags = singularity_flags
 
 	@property
-	def singularity_image():
+	def singularity_image(self):
 		return __singularity_image
 
 	@property
-	def do_zero_dm_filter():
+	def do_zero_dm_filter(self):
 		return __do_zero_dm_filter
 
 	@property
-	def pulsarX_flags():
+	def pulsarX_flags(self):
 		return __pulsarX_flags	
 
 	@property
-	def fast_nbin():
+	def fast_nbin(self):
 		return __fast_nbin
 
 	@property
-	def slow_nbin():
+	def slow_nbin(self):
 		return __slow_nbin
 
 	@property
 	def singularity_flags(self):
 		return self.__singularity_flags
 
+	def __str__(self):
+		return "singularity_image: {} \n singularity_flags: {} \n do_zero_dm_filter: {} \n pulsarX_flags: {} \n fast_nbin: {} \n slow_nbin: {} \n".format(singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin)
+
+	def __repr__(self):
+		return __str__()
 
 class SlurmConfig(object):
 	def __init__(self, num_simultaneous_jobs, partition, mail_user, mail_type):
@@ -211,22 +224,28 @@ class SlurmConfig(object):
 		self.__mail_user = mail_user
 
 	@property
-	def num_simultaneous_jobs():
+	def num_simultaneous_jobs(self):
 		return __num_simultaneous_jobs
 
 	@property
-	def partition():
+	def partition(self):
 		return __partition
 
 	@property
-	def mail_type():
+	def mail_type(self):
 		return __mail_type
 
 	@property
-	def mail_user():
+	def mail_user(self):
 		return __mail_user
 
-class Config():
+	def __str__(self):
+		return " num_simultaneous_jobs {} \n partition {} \n mail_user {}  \n mail_type {} \n".format(num_simultaneous_jobs, partition, mail_user, mail_type)
+
+	def __repr__(self):
+		return __str__()
+
+class Config(object):
 	def __init__(self, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
 		self.__file_locations = file_locations
 		self.__presto_config = presto_config
@@ -239,34 +258,41 @@ class Config():
 
 
 	@property
-	def file_locations():
+	def file_locations(self):
 		return __file_locations
 
 	@property
-	def presto_config():
+	def presto_config(self):
 		return __presto_config
 
 	@property
-	def peasoup_config():
+	def peasoup_config(self):
 		return __peasoup_config
 
 	@property
-	def pulsarX_config():
+	def pulsarX_config(self):
 		return __pulsarX_config
 
 	@property
-	def slurm_config():
+	def slurm_config(self):
 		return __slurm_config
 
 	@property
-	def dm_file():
+	def dm_file(self):
 		return __dm_file
 
 	@property
-	def beam_list:
+	def beam_list(self):
 		return __beam_list
 
 	@property
-	def max_beams_on_processing_disk():
+	def max_beams_on_processing_disk(self):
 		return __max_beams_on_processing_disk;
 
+
+	def __str__(self):
+		return "\n Configurations: \n File locations: {} Presto config: {} \n PulsarX config: {} \n, Slurm config: {} \n dm_file: {} \n beam_list: {} \n \
+			max_beams_on_processing_disk: {}".format(file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk)
+
+	def __repr__(self):
+		return __str__()
