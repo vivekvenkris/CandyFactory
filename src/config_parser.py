@@ -95,7 +95,7 @@ class Configuration(object):
                                                     self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
 
 
-        all_segment_configs = get_acc_range_and_segment_fraction()
+        all_segment_configs = self.get_acc_range_and_segment_fraction()
 
 
         observations =  Observation(self.dict_process_config['SOURCE'],
@@ -107,9 +107,9 @@ class Configuration(object):
 
         presto_config = PrestoConfig(self.dict_process_config['PRESTO_IMAGE'], 
                                   singularity_flags,  
-                                  rfifind_flags,
-                                  ddplan_flags,
-                                  accelsearch_flags)  
+                                  self.generate_rfifind_flags(),
+                                  self.generate_ddplan_flags(),
+                                  self.generate_accelsearch_flags())  
 
         peasoup_config = PeasoupConfig(self.dict_process_config['PEASOUP_IMAGE'], 
                                     singularity_flags,
