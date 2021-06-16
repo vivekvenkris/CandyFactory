@@ -115,7 +115,7 @@ class Configuration(object):
                                     all_segment_configs,
                                     self.dict_process_config['START_OFFSET'],
                                     self.dict_process_config['END_OFFSET'],
-                                    self.dict_process_config['DO_ZERO_ACC_BIRDIES'], 
+                                    self.dict_process_config['ACCELSEARCH_BIRDIES'], 
                                     self.dict_process_config['PEASOUP_FLAGS']
                                     ) 
 
