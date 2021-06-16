@@ -1,4 +1,4 @@
-import data_holders
+from data_holders import *
 from  gen_utils import ensure_file_exists
 from shutil import copyfile
 import os
