@@ -49,24 +49,24 @@ class Ledger(object):
         self.logger = Logger.getInstance().logger
 
         self.conn = create_connection(name, self.logger)
-        create_processing_status = "CREATE TABLE IF NOT EXISTS processing_status(name varchar, status varchar NOT NULL, PRIMARY KEY (name));"
+        create_processing_status = "CREATE TABLE IF NOT EXISTS processing_status(name varchar, status varchar NOT NULL, search_type varchar NOT NULL, PRIMARY KEY (name));"
         transact_with_db(self.conn, create_processing_status, self.logger)
 
-    def add_to_ledger(beam_name):
-        insert_processing_status="INSERT INTO processing_status(name, status) values({},0)".format(beam_name)
+    def add_to_ledger(beam_name, type=0):
+        insert_processing_status="INSERT INTO processing_status(name, search_type, status) values({}, {},0)".format(beam_name, search_type)
         transact_with_db(self.conn, create_processing_status, self.logger)
 
-    def update_status(beam_name, status):
-        update_processing_status="UPDATE processing_status SET status = {} WHERE name = {}".format(status, beam_name)
+    def update_status(beam_name, status, type=0):
+        update_processing_status="UPDATE processing_status SET status = {} WHERE name = {} AND search_type = {}".format(status, beam_name, search_type)
         transact_with_db(self.conn, create_processing_status, self.logger)
 
-    def has_beam(beam_name):
-        select_processing_status="SELECT * FROM processing_status WHERE name = {}".format(beam_name)
+    def has_beam(beam_name, type=0):
+        select_processing_status="SELECT * FROM processing_status WHERE name = {} AND search_type = {}".format(beam_name, search_type)
         ret = transact_with_db(self.conn, select_processing_status, self.logger)
         return len(ret) > 0
 
-    def get_status(beam_name):
-        select_processing_status="SELECT status FROM processing_status WHERE name = {}".format(beam_name)
+    def get_status(beam_name, type=0):
+        select_processing_status="SELECT status FROM processing_status WHERE name = {} AND search_type = {}".format(beam_name, search_type)
         ret = transact_with_db(self.conn, select_processing_status, self.logger)
         return ret[0]
 
