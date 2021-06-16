@@ -1,5 +1,5 @@
 import sys, os, os.path, glob, subprocess, multiprocessing, shlex, shutil, copy
-from Log import logger
+from log import Logger, init_logging
 
 
 def get_nearest_even_number(number_int):
