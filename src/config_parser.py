@@ -79,9 +79,8 @@ class Configuration(object):
                                                     self.dict_process_config['ROOT'],
                                                     self.dict_process_config['ROOT'])
 
-        pulsarX_flags = " -L {} -n {} -b {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
+        pulsarX_flags = " -L {} -n {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
                                                     self.dict_process_config['NCHAN_FOLD'],
-                                                    self.dict_process_config['NBIN_FOLD'], 
                                                     self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
 
 
