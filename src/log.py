@@ -72,6 +72,8 @@ class Logger(object):
     @property
     def logger(self):
         return self._logger
+
+    
     
 
 

@@ -1,8 +1,9 @@
-from Log import Logger
+from log import Logger, init_logging
 import os
 import time
 import threading
-from utis import run_process
+from gen_utils import run_process
+from constants import STATUS_DICT, StatusManager
 
 class Rsyncer(object):
 
@@ -48,7 +49,6 @@ class Rsyncer(object):
 
 			for i in beam_list:
 
-
 				if (self.ledger.get_num_running_beams() >= self.max_beams_on_processing_disk):
 					break
 
@@ -56,12 +56,13 @@ class Rsyncer(object):
 				inp = "{}:{}".format(file_locations.staging_machine, os.path.join(file_locations.staging_path,beam_dir_name))
 				out = "{}".format(os.path.join(file_locations.processing_path,beam_dir_name))
 
-				if self.ledger.has_beam(i) and self.ledger.get_status(i) > 1:
+				if self.ledger.has_beam(i) and self.ledger.get_status(i) > StatusManager.RSYNC_TO_STAGING:
 					logger.info("Beam {} is already processed. Skipping rsync from {} to {}").format(beam_dir_name,inp,out)
 					continue	
 
 				command = "rsync -aPvz {} {}".format(inp, out)
 				logger.info("Transferring beam: {:02d} from {} to {}".format(beam_dir_name,inp,out))
+				self.ledger.update_status(i, StatusManager.RSYNC_TO_PROCESSING)
 
 		time.sleep(900)
 
