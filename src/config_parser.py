@@ -2,6 +2,8 @@ import data_holders
 from  gen_utils import ensure_file_exists
 from shutil import copyfile
 import os
+from pathlib import Path
+
 # Fixed definitions or paths  
 PULSARX_TEMPLATE = "/home/psr/software/PulsarX/include/template/meerkat_fold.template"
 
@@ -12,7 +14,8 @@ class Configuration(object):
     def init_default():
         cwd = os.getcwd()
         dest = os.path.join(cwd, "default.cfg")
-        src = os.path.join(os.path.dirname(__file__), "config_file")
+        file_path=Path(__file__)
+        src = os.path.join(file_path.parent.parent, "defaults", "config_file")
         copyfile(src, dest)
 
 
