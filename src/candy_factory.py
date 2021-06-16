@@ -52,6 +52,8 @@ def main():
     config = Configuration(args.config)
     print(config)
 
+    sys.exit(0)
+
 
 
 
@@ -59,7 +61,7 @@ def main():
 
 
     # Rsyncs data from tape -> staging and staging -> processing. 
-    rsyncer = Rsyncer(config.file_locations, config.beam_list, config.max_beams_on_processing_disk, ledger)
+    rsyncer = Rsyncer(config.filelocations, config.beam_list, config.max_beams_on_processing_disk, ledger)
     rsyncer.transfer_files()
 
 
