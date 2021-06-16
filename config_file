@@ -44,11 +44,12 @@ DM_MIN 				225                 # Minimum DM for DDplan
 DM_MAX 				250                 # Max DM for DDplan
 N_SUBBANDS 			256              # Number of Subbands for DDplan
 DM_FILE 			/dmfile/dm.file    # Path to PEASOUP compatible file with list of DM trials (Use if DDplan not applied)
-ACC_MIN 			-25                # Min acceleration 
-ACC_MAX 			25                 # Max acceleration
-LIST_SEGMENTS 			full,20,50   # Comma separated lengths (in minutes) of chunks to search (e.g. full,10,30)
-START_OFFSET               			# Ignore n fraction of data (Not working currently)
-SCALE_ACC_WITH_SEGMENTS    			# FScale acceleration values based on segment lengths (Not working currently)
+#ACC_MIN 			-25                # Min acceleration 
+#ACC_MAX 			25                 # Max acceleration
+ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5, # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
+START_OFFSET               			# Ignore n fraction of data at start 
+END_OFFSET                        # Ignore n fraction of data from end of file                  
+PEASOUP_FLAGS            "-m 8.5 -n 3 --limit 1000"            # Other flags for peasoup 
 
 
 #PulsarX
@@ -56,7 +57,7 @@ NSUBINT_FOLD 			32                  # Number of subints in folded archive
 NBIN_FOLD_FAST   		64                  # Number of bins in folded profile for fast candidates (P < 100 ms)
 NBIN_FOLD_SLOW   		128                 # Number of bins in folded profile for slow candidates (P > 100 ms)  
 NCHAN_FOLD  			32                  # Number of channels in folded archive
-ADDITIONAL_PULSARX_FLAGS          		    # Additional flags for pulsarX folding 
+ADDITIONAL_PULSARX_FLAGS		"--clfd 2.0  --plotx --rfi"           		    # Additional flags for pulsarX folding 
 
 
 #IMAGE_NAMES
