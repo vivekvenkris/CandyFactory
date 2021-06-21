@@ -39,7 +39,7 @@ class Ledger(object):
         return Ledger.__instance
 
 
-    def  __init__(self, name="candy_factory.db"):
+    def  __init__(self, name):
 
         if Ledger.__instance != None:
             raise Exception("This class is a singleton! use Ledger.getInstance()")
