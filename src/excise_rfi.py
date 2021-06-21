@@ -31,9 +31,6 @@ def main(args):
     rfi_utils = RFIUtils(config.presto_config.singularity_image,
                     config.presto_config.singularity_flags, ledger)
 
-
-
-
     rfi_utils.run_filtool()
     self.ledger.update_status(i,StatusManager.FILTOOLS )
 
