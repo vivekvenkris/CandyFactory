@@ -18,7 +18,7 @@ class ConfigurationReader(object):
         src = os.path.join(file_path.parent.parent, "defaults", "config_file")
         line = None
         with open(src) as f:
-            line = f.read().replace("<ROOT_OUTPUT_DIR>", os.path.basename(cwd))
+            line = f.read().replace("<ROOT_OUTPUT_DIR>", os.path.abspath(cwd))
 
         with open(dest, "w") as f:
             f.write(line)
@@ -74,12 +74,20 @@ class ConfigurationReader(object):
 
         config_file = open( config_filename, "r" )
 
-        for line in config_file:
-            if line != "\n" and (not line.startswith("#")):
-                chunks = line.split('#')[0].split(None,1)
-                key = chunks[0]
-                val = chunks[1] if len(chunks) > 1 else ""
-                self.dict_process_config[key] = val      #Save parameter key and value in the dictionary 
+        lines = None
+
+        with open( config_filename, "r" ) as f:
+            lines =  f.read().splitlines()
+
+        for line in lines:
+
+            if not line or line.startswith("#"):
+                continue;
+                
+            chunks = line.split('#')[0].strip().split(None,1)
+            key = chunks[0]
+            val = chunks[1] if len(chunks) > 1 else ""
+            self.dict_process_config[key] = val  #Save parameter key and value in the dictionary 
               
         config_file.close()
      
@@ -143,7 +151,7 @@ class ConfigurationReader(object):
                                   self.dict_process_config['MAIL_TYPE']) 
                            
 
-        self.__config =  Config(filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
+        self.__config =  Config(self.dict_process_config['ROOT'], filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
             self.dict_process_config['BEAM_LIST'], self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK'])
   
     @property
