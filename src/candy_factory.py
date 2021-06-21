@@ -50,14 +50,12 @@ def main():
 
 
     config_reader = ConfigurationReader(args.config) 
-    print(config_reader.config)
 
-    sys.exit(0)
+    config = config_reader.config
 
+    ledger_name = os.path.join(config.root_output_dir, "candy_factory.db")
 
-
-
-    ledger = Ledger()
+    ledger = Ledger(ledger_name)
 
 
     # Rsyncs data from tape -> staging and staging -> processing. 
