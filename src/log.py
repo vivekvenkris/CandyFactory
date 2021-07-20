@@ -47,12 +47,12 @@ class Logger(object):
         else:
             Logger.__instance = self
         logger = logging.getLogger(file_name)
-        logger.setLevel(logging.INFO if file_level is None else file_level)
+        logger.setLevel(logging.DEBUG if file_level is None else file_level)
         logger.propagate = False
 
         file_handler = logging.FileHandler(file_name)
         file_handler.setFormatter(formatter)
-        file_handler.setLevel(logging.INFO if file_level is None else file_level)
+        file_handler.setLevel(logging.DEBUG if file_level is None else file_level)
 
         stream_handler = logging.StreamHandler()
         stream_handler.setLevel(logging.INFO)
