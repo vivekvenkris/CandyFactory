@@ -1,4 +1,12 @@
 from constants import StatusManager
+import sys
+import argparse
+from config_parser import ConfigurationReader
+from log import Logger, init_logging
+import datetime
+from ledger import Ledger
+from app_utils import ensure_correct_processing_status
+from gen_utils import run_process, run_with_singularity
 def get_args():
     argparser = argparse.ArgumentParser(description="Run peasoup")
     argparser.add_argument("-config", dest="config", help="configuration file")
@@ -22,19 +30,24 @@ def main(args):
     args = get_args()    
     logger = init_logging(file_name="{}_{}.log".format(args.log_file_prefix,(datetime.datetime.now()).strftime("%Y-%m-%d-%H:%M:%S")),
                              file_level=logging.DEBUG if args.verbose else None)
-    config = parse_config(args.config_file)
-    ledger = Ledger(args.ledger_file) if args.ledger_file is None else Ledger()
+
+    config_reader = ConfigurationReader(args.config) 
+    config = config_reader.config
+
+    ledger = Ledger(args.ledger_file)
+
+    status_manager = StatusManager.getInstance()
 
     status = ledger.get_status(args.beam_num)
-    ensure_correct_processing_status(status,StatusManager.ZERO_DM_ACCELSEARCH)
+    ensure_correct_processing_status(status,status_manager.ZERO_DM_ACCELSEARCH)
 
-    type = args.search_type
+    search_type = args.search_type
     peasoup_config = config.peasoup_config
 
-    base_peasoup_cmd = "/usr/local/bin/peasoup --dm_file {} --pad -z {}.birds -k {}.badchan_peasoup {}"
+    base_peasoup_cmd = "/usr/local/bin/peasoup --dm_file {} --pad -z {}.birds -k {}.badchan_peasoup {}" \
                         .format(config.dm_file, args.beam_num, args.beam_num, config.peasoup_config.peasoup_flags )
 
-    if(type == StatusManager.ZERO_ACC):
+    if(search_type == status_manager.SEARCH_TYPE_ZERO_ACC):
 
         peasoup_cmd = "{} --acc_start 0 --acc_end 0 -o zero_acc".format(base_peasoup_cmd) 
 
@@ -42,12 +55,12 @@ def main(args):
 
     else:
 
-        for segment in config.peasoup_config.segment_list:
+        for segment_config in config.peasoup_config.segment_configs:
 
 
-            peasoup_cmd = "{} --acc_start {} --acc_end {} ".format(base_peasoup_cmd, segment.acc_start, segment.acc_end)
+            peasoup_cmd = "{} --acc_start {} --acc_end {} ".format(base_peasoup_cmd, segment_config.acc_start, segment_config.acc_end)
 
-            if( segment.fractional_segment_length == 1):
+            if( segment_config.fractional_segment_length == 1):
 
                 peasoup_cmd = "{} --start {} --end {} -o full".format(peasoup_cmd, peasoup_config.start_offset, peasoup_config.end_offset)
                 run_with_singularity(config.peasoup_config.singularity_image, peasoup_config.singularity_flags, peasoup_cmd)
@@ -57,13 +70,13 @@ def main(args):
 
                 start = peasoup_config.start_offset
 
-                end = start + segment.fractional_segment_length
+                end = start + segment_config.fractional_segment_length
 
-                while start + segment.fractional_segment_length <= peasoup_config.end_offset:
+                while start + segment_config.fractional_segment_length <= peasoup_config.end_offset:
 
-                    end = start + segment.fractional_segment_length
+                    end = start + segment_config.fractional_segment_length
 
-                    dir_str = segment.fractional_segment_length_start_end
+                    dir_str = segment_config.fractional_segment_length_start_end
 
                     peasoup_cmd = "{} --start {} --end {}",format(start, end)
                     run_with_singularity(config.peasoup_config.singularity_image, peasoup_config.singularity_flags, peasoup_cmd)
@@ -71,12 +84,15 @@ def main(args):
                     start = end
 
                 #if there are any residual data, choose the last segment from the end
-                start = end - segment.fractional_segment_length
+                start = end - segment_config.fractional_segment_length
 
                 peasoup_cmd = "{} --start {} --end {}",format(start, end)
 
                 run_with_singularity(config.peasoup_config.singularity_image, peasoup_config.singularity_flags, peasoup_cmd)
 
+
+if __name__ == '__main__':
+    main(sys.argv)
 
 
 
@@ -104,6 +120,3 @@ def main(args):
 
 
 
-
-if __name__ == __main__():
-    main(args)
