@@ -36,66 +36,82 @@ STATUS_DICT ={
 
 class StatusManager(object):
 
-	__INIT = "0"
-	__RSYNC_TO_STAGING = "1"
-	__RSYNC_TO_PROCESSING = "2"
-	__FILTOOLS = "3"
-	__RFIFIND_MASK = "4"
-	__ZERO_DM_ACCELSEARCH = "5"
+	__instance = None
+	@staticmethod
+	def getInstance():
+		""" Static access method. """
+		if StatusManager.__instance == None:
+			StatusManager()
+		return StatusManager.__instance
 
-	__PEASOUP_ZERO_ACC = "6"
-	__CANDIDATE_RFI_MATCHING = "7"
-	__FOLD_ZERO_ACC = "8"
-	__PICS_SCORER = "9"
-	__CSV_GEN = "10"
 
-	__SEARCH_TYPES = "ZERO_ACC, ACC, SEGMENTED"
+	def __init__(self):
 
-	__SEARCH_TYPE_ZERO_ACC = "ZERO_ACC"
-	__SEARCH_TYPE_ACC = "ACC"
-	__SEARCH_TYPE_SEGMENTED = "SEGMENTED"
+		if StatusManager.__instance != None:
+			raise Exception("This class is a singleton! use StatusManager.getInstance()")
+		else:
+			StatusManager.__instance = self
+
+		self.__INIT = 0
+		self.__RSYNC_TO_STAGING = 1
+		self.__RSYNC_TO_PROCESSING = 2
+		self.__FILTOOLS = 3
+		self.__RFIFIND_MASK = 4
+		self.__ZERO_DM_ACCELSEARCH = 5
+
+		self.__PEASOUP_ZERO_ACC = 6
+		self.__CANDIDATE_RFI_MATCHING = 7
+		self.__FOLD_ZERO_ACC = 8
+		self.__PICS_SCORER = 9
+		self.__CSV_GEN = 10
+
+		self.__SEARCH_TYPES = "ZERO_ACC, ACC, SEGMENTED"
+
+		self.__SEARCH_TYPE_ZERO_ACC = "ZERO_ACC"
+		self.__SEARCH_TYPE_ACC = "ACC"
+		self.__SEARCH_TYPE_SEGMENTED = "SEGMENTED"
 
 	@property
 	def INIT(self):
-		return __INIT
+		return self.__INIT
 
 	@property
 	def SEARCH_TYPES(self):
-		return __SEARCH_TYPES
+		return self.__SEARCH_TYPES
 
 	@property
 	def RSYNC_TO_STAGING(self):
-		return __RSYNC_TO_STAGING
+		return self.__RSYNC_TO_STAGING
 	@property
 	def RSYNC_TO_PROCESSING(self):
-		return __RSYNC_TO_PROCESSING
+		return self.__RSYNC_TO_PROCESSING
 	@property
 	def FILTOOLS(self):
-		return __FILTOOLS
+		return self.__FILTOOLS
 	@property
 	def RFIFIND_MASK(self):
-		return __RFIFIND_MASK
+		return self.__RFIFIND_MASK
 	@property
 	def ZERO_DM_ACCELSEARCH(self):
-		return __ZERO_DM_ACCELSEARCH
+		return self.__ZERO_DM_ACCELSEARCH
 	@property
 	def PEASOUP_ZERO_ACC(self):
-		return __PEASOUP_ZERO_ACC
+		return self.__PEASOUP_ZERO_ACC
 	@property
 	def CANDIDATE_RFI_MATCHING(self):
-		return __CANDIDATE_RFI_MATCHING
+		return self.__CANDIDATE_RFI_MATCHING
 	@property
 	def FOLD_ZERO_ACC(self):
-		return __FOLD_ZERO_ACC
+		return self.__FOLD_ZERO_ACC
 	@property
 	def PICS_SCORER(self):
-		return __PICS_SCORER
+		return self.__PICS_SCORER
 	@property
 	def CSV_GEN(self):
-		return __CSV_GEN 
+		return self.__CSV_GEN 
 
 	@property
-	def SEARCH_TYPE_SEGMENTED(self):
+	def SEARCH_TYPE_ZERO_ACC(self):
 		return self.__SEARCH_TYPE_ZERO_ACC
 	
 	@property
