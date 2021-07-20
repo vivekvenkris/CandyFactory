@@ -1,54 +1,59 @@
-from utils import run_with_singularity
+from gen_utils import run_with_singularity
 from constants import STATUS_DICT
 from ledger import Ledger
+import glob
+import os
+from constants import StatusManager
+import re
+class RFIUtils(object):
 
-Class RFIUtils(Object):
-
-	def __init__(config, out_prefix, ledger):
+	def __init__(self, config, out_prefix):
 		self.config = config
-		self.out_prefix = prefix
+		self.out_prefix = out_prefix
 		self.ledger = Ledger.getInstance()
+		self.status_manager = StatusManager.getInstance()
 
 
-	def do_accelsearch(input_file, beam_num):
+	def do_accelsearch(self, input_file, beam_name):
 
-		prepdata_cmd = "prepdata -dm 0 -nobary -o {}_{:02d}_DM0 {}".format(out_prefix, beam_num, input_file)
+		prepdata_outfile_prefix = "{}_{}_DM0.00".format(self.out_prefix, beam_name)
 
-		run_with_singularity(self.config.presto_config.singularity_image, 
-						self.presto_config.singularity_flags, prepdata_cmd)
-
-
-		realfft_cmd = "realfft {}".format(infile)
+		prepdata_cmd = "prepdata -dm 0 -nobary -o {} {}".format(prepdata_outfile_prefix, input_file)
 
 		run_with_singularity(self.config.presto_config.singularity_image, 
-						self.presto_config.singularity_flags, realfft_cmd )
+						self.config.presto_config.singularity_flags, prepdata_cmd)
 
 
-		accelsearch_command = "accelsearch %s -zmax 0 -numharm 8 %s" % (self.presto_config.accelsearch_flags, input_file)
-
-		run_with_singularity(self.config.presto_config.singularity_image, 
-						self.presto_config.singularity_flags, accelsearch_command)
-
-
-	def run_rfifind(input_file, beam_num):
-
-		rfifind_cmd = "rfifind -o {} {} {}".format(prefix, self.presto_config.rfifind_flags, input_file)
+		realfft_cmd = "realfft {}.dat".format(prepdata_outfile_prefix)
 
 		run_with_singularity(self.config.presto_config.singularity_image, 
-						self.presto_config.singularity_flags, rfifind_cmd)
+						self.config.presto_config.singularity_flags, realfft_cmd )
+
+
+		accelsearch_command = "accelsearch {} -zmax 0 -numharm 8 {}.fft".format(self.config.presto_config.accelsearch_flags, prepdata_outfile_prefix)
+
+		run_with_singularity(self.config.presto_config.singularity_image, 
+						self.config.presto_config.singularity_flags, accelsearch_command)
+
+
+	def run_rfifind(self, input_file, beam_name):
+
+		rfifind_cmd = "rfifind -o {}_{} {} {}".format(self.out_prefix, beam_name, self.config.presto_config.rfifind_flags, input_file)
+
+		run_with_singularity(self.config.presto_config.singularity_image, 
+						self.config.presto_config.singularity_flags, rfifind_cmd)
 
 
 
-	def run_filtool(input_file, beam_num):
-		ledger.update_status(STATUS_DICT["03_ZERO_DM_FILTER"])
-	 	filtools_cmd ="filtool -t 16  -z kadaneF 8 4 zdot -i {} -telescope Meerkat -o {} -f {}".format(beam_num, prefix, input_file)
-
-	 	run_with_singularity(self.config.pulsarX_config.singularity_image, 
+	def run_filtool(self, input_file, beam_name):
+		beam_num = int(re.findall('\\d+', beam_name)[0])
+		filtools_cmd ="filtool -t 16  -z kadaneF 8 4 zdot -i {} -telescope Meerkat -o {}_{} -f {}".format(beam_num, self.out_prefix,beam_name, input_file)
+		run_with_singularity(self.config.pulsarX_config.singularity_image, 
 	 					self.config.pulsarX_config.singularity_flags,filtools_cmd)
 
 
 
-	def make_birds_file(ACCEL_0_filename, width_Hz, flag_grow=1, sigma_birdies_threshold=4):
+	def make_birds_file(self, ACCEL_0_filename, width_Hz, flag_grow=1, sigma_birdies_threshold=4):
 		infile_nameonly = os.path.basename(ACCEL_0_filename)
 		infile_basename = infile_nameonly.replace("_ACCEL_0", "")
 		birds_filename = ACCEL_0_filename.replace("_ACCEL_0", ".birds")
@@ -56,16 +61,16 @@ Class RFIUtils(Object):
 
 		#Skip first three lines
 
-		print "make_birds_file:: Opening the candidates: %s" % (ACCEL_0_filename)
+		print ("make_birds_file:: Opening the candidates: %s") % (ACCEL_0_filename)
 		candidate_birdies = sifting.candlist_from_candfile(ACCEL_0_filename)
 		candidate_birdies.reject_threshold(sigma_birdies_threshold)
 
 		#Write down candidates above a certain sigma threshold
 		list_birdies = candidate_birdies.cands
 
-		print "make_birds_file:: Number of birdies = %d" % (len(list_birdies))
+		print ("make_birds_file:: Number of birdies = %d") % (len(list_birdies))
 		file_birdies = open(birds_filename, "w")
-		print "make_birds_file:: File_birdies: %s" % (birds_filename)
+		print ("make_birds_file:: File_birdies: %s") % (birds_filename)
 
 		for cand in list_birdies:
 		        file_birdies.write("%.3f     %.20f \n" % (cand.f, width_Hz)  )
@@ -76,5 +81,19 @@ Class RFIUtils(Object):
 
 
 
+	def find_rfi(self):
 
+		beam_list = self.ledger.get_beams_for_status(self.status_manager.RSYNC_TO_PROCESSING)
+
+		for beam_name in beam_list:
+			file_name = glob.glob(os.path.join(self.config.file_locations.processing_path, beam_name)+ "/*.fil")[0]
+			self.run_filtool(file_name, beam_name)
+			self.ledger.update_status(beam_name, self.status_manager.FILTOOLS)
+
+			self.run_rfifind(file_name, beam_name)
+			self.ledger.update_status(beam_name, self.status_manager.RFIFIND_MASK)
+
+
+			self.do_accelsearch(file_name, beam_name)
+			self.ledger.update_status(beam_name, self.status_manager.ZERO_DM_ACCELSEARCH)
 
