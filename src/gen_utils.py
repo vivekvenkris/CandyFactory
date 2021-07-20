@@ -1,42 +1,28 @@
 import sys, os, os.path, glob, subprocess, multiprocessing, shlex, shutil, copy
 from log import Logger, init_logging
-
+import datetime, time
 
 def get_nearest_even_number(number_int):
         return number_int if int(number_int) % 2 == 0 else number_int-1
 
 
-def ensure_correct_processing_status(status, reqd_status):
-        if(status < reqd_status):
-            IncorrectStatusException("Current processing status={} < required={}, aborting. ".format(status, reqd_status))
-
-        elif(status >= reqd_status):
-            IncorrectStatusException("Current processing status={} >  required={}, skipping. ".format(status, reqd_status) )
-
-
-
-       
+def strip_quotes_and_spaces(value):
+    return value.replace("\"","").strip("\\s+")       
 
 
 def run_process(command):
 
-        logger = Logger().logger
+        logger = Logger.getInstance().logger
 
         command_chunks = command.split()
 
         datetime_start = (datetime.datetime.now()).strftime("%Y/%m/%d  %H:%M")
         time_start = time.time()
 
-        logger.info("****************************************************************\n")
-        logger.info("START DATE AND TIME: %s\n" % (datetime_start))
-        logger.info("\nCOMMAND:\n")
-        logger.info("%s\n\n" % (command))
-        logger.info("WORKING DIRECTORY: %s\n" % (work_dir))
-        logger.info("****************************************************************\n")
-        log_file.flush()
-
-        proc = subprocess.Popen(command_chunks, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, envs = os.environ.copy())
-        proc.communicate()  #Wait for the process to complete                                                                                                                                                    
+        logger.info("\n RUNNING COMMAND: {}\n".format(command))
+        print(command_chunks)
+        #proc = subprocess.Popen(command_chunks, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env = os.environ.copy())
+        #proc.communicate()  #Wait for the process to complete                                                                                                                                                    
 
         datetime_end = (datetime.datetime.now()).strftime("%Y/%m/%d  %H:%M")
         time_end = time.time()
@@ -45,10 +31,29 @@ def run_process(command):
         logger.info("\nTOTAL TIME TAKEN: %d s\n" % (time_end - time_start))
 
 
+
+def guess_and_change_dtype(value):
+
+    if "." in value:
+
+        try:
+            return float(value)
+        except ValueError:
+            pass
+    else:
+        try:
+            return int(value)
+        except ValueError:
+            pass
+
+    return value
+
+
+
 def run_with_singularity(image, singularity_flags, command):
 
 
-        command = "singularity exec" + singularity_flags + " " + image + " " + command
+        command = "singularity exec " + singularity_flags + " " + image + " " + command
         run_process(command)
 
 
