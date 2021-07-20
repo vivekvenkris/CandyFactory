@@ -1,5 +1,5 @@
 from data_holders import *
-from  gen_utils import ensure_file_exists
+from  gen_utils import ensure_file_exists, strip_quotes_and_spaces, guess_and_change_dtype
 from shutil import copyfile
 import os
 from pathlib import Path
@@ -25,7 +25,8 @@ class ConfigurationReader(object):
 
 
     def get_value_if_exists(self, flag, value):
-        return flag +" "+ value if value.strip("\\s+") != "" else ""
+        return "{} {} ".format(flag, value) if value != "" else ""
+
 
 
     def generate_ddplan_flags(self):
@@ -34,7 +35,6 @@ class ConfigurationReader(object):
 
      
     def generate_rfifind_flags(self):
-
         zapint_flag = self.get_value_if_exists("-zapints", self.dict_process_config['RFIFIND_TIME_INTERVALS_TO_ZAP'])
         chanzap_flag = self.get_value_if_exists("-zapchan", self.dict_process_config['RFIFIND_CHANS_TO_ZAP'])
         time_stats_flag = self.get_value_if_exists("-time",self.dict_process_config['RFIFIND_TIME']) 
@@ -45,11 +45,10 @@ class ConfigurationReader(object):
         return zapint_flag + chanzap_flag + time_stats_flag + ignorechan_flag +timesig_flag + freqsig_flag
           
     def generate_accelsearch_flags(self):
-        accelsearch_flags = self.dict_process_config['ACCELSEARCH_FLAGS'] 
+        accelsearch_flags = strip_quotes_and_spaces(self.dict_process_config['ACCELSEARCH_FLAGS'])
 
         if "zmax" in accelsearch_flags or "wmax" in accelsearch_flags or "ncpus" in accelsearch_flags:
             raise Exception("You have specified zmax, wmax or ncpus which is already fixed.") 
-
 
         return  accelsearch_flags
 
@@ -58,8 +57,8 @@ class ConfigurationReader(object):
         seg_configs = []
         for i in self.dict_process_config['ACC_SEGMENT_LIST'].strip().split(","):
             acc_start, acc_end, seg_length = i.strip().split(":")
-            seg_length = 1 if "full" in seg_length else seg_length
-            seg_config = SegmentConfig(seg_length, acc_start, acc_end)
+            seg_length = 1 if "full" in seg_length else float(seg_length)
+            seg_config = SegmentConfig(seg_length, float(acc_start), float(acc_end))
             seg_configs.append(seg_config)
 
         return seg_configs
@@ -86,7 +85,9 @@ class ConfigurationReader(object):
                 
             chunks = line.split('#')[0].strip().split(None,1)
             key = chunks[0]
-            val = chunks[1] if len(chunks) > 1 else ""
+            val = guess_and_change_dtype(strip_quotes_and_spaces(chunks[1])) if len(chunks) > 1 else ""
+
+            print(val, type(val))
             self.dict_process_config[key] = val  #Save parameter key and value in the dictionary 
               
         config_file.close()
@@ -99,7 +100,7 @@ class ConfigurationReader(object):
 
         pulsarX_flags = " -L {} -n {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
                                                     self.dict_process_config['NCHAN_FOLD'],
-                                                    self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'] )
+                                                    self.dict_process_config['ADDITIONAL_PULSARX_FLAGS']) 
 
 
         all_segment_configs = self.get_acc_range_and_segment_fraction()
@@ -130,7 +131,6 @@ class ConfigurationReader(object):
         filelocations = FileLocations(self.dict_process_config['TAPE_PATH'],
                                    self.dict_process_config['TAPE_MACHINE'],  
                                    self.dict_process_config['STAGING_PATH'], 
-                                   self.dict_process_config['STAGING_MACHINE'],
                                    self.dict_process_config['PROCESSING_PATH'] 
                                    ) 
 
@@ -149,10 +149,12 @@ class ConfigurationReader(object):
                                   self.dict_process_config['PARTITION'],
                                   self.dict_process_config['MAIL_USER'],
                                   self.dict_process_config['MAIL_TYPE']) 
+
+        beam_list = None if self.dict_process_config['BEAM_LIST'] is "" else self.dict_process_config['BEAM_LIST'].split(",")
                            
 
-        self.__config =  Config(self.dict_process_config['ROOT'], filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
-            self.dict_process_config['BEAM_LIST'], self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK'])
+        self.__config =  Config(self.dict_process_config['ROOT'], observations, filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
+            beam_list, int(self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK']))
   
     @property
     def config(self):
