@@ -3,11 +3,10 @@
 ROOT	<ROOT_OUTPUT_DIR>
 
 #Hercules paths
-TAPE_PATH 		/archive/test       #Path on Hercules archive to retrieve data from  
-TAPE_MACHINE   		archive
-STAGING_PATH   		/mkfs/00/Terzan5     # Path on the MeerKAT filesystem (mkfs) to store data   
-STAGING_MACHINE 	127.0.0.1 
-PROCESSING_PATH 	/hercules/test     # Path on Hercules to transfer file from mkfs 
+TAPE_PATH               /Users/vkrishnan/trashcan/test_obs/tape/2021-06-24-13:14:15/1284       #Path on Hercules archive to retrieve data from
+TAPE_MACHINE		127.0.0.1
+STAGING_PATH            /Users/vkrishnan/trashcan/test_obs/staging/2021-06-24-13:14:15/1284     # Path on the MeerKAT filesystem (mkfs) to store data
+PROCESSING_PATH         /Users/vkrishnan/trashcan/test_obs/processing/2021-06-24-13:14:15/1284     # Path on Hercules to transfer file from mkfs
 
 MAX_BEAMS_ON_PROCESSING_DISK 10
 
