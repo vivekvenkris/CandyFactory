@@ -2,13 +2,14 @@ import argparse
 from log import Logger, init_logging
 import logging
 import random, time, datetime
-from rsyncer import Rsyncer
-from config_parser import ConfigurationReader
-import os, sys
+import os, sys, pathlib, errno, time
+import numpy as np
+
+from rfi_utils import RFIUtils
 from ledger import Ledger
 from exceptions import IncorrectInputsException
-import pathlib
-import errno
+from rsyncer import Rsyncer
+from config_parser import ConfigurationReader
 
 def get_args():
     argparser = argparse.ArgumentParser(description="Processing pipeline for TRAPUM pulsar searches on the Hercules 2 cluster")
@@ -58,15 +59,17 @@ def main():
     ledger = Ledger(ledger_name)
 
 
-    # Rsyncs data from tape -> staging and staging -> processing. 
-    rsyncer = Rsyncer(config.filelocations, config.beam_list, config.max_beams_on_processing_disk, ledger)
-    rsyncer.transfer_files()
+    beam_list = config.beam_list if config.beam_list is not None else np.arange(0,config.observations.nbeams, 1)
+    print(beam_list)
+    #Rsyncs data from tape -> staging and staging -> processing. 
+    #rsyncer = Rsyncer(config.file_locations, beam_list, config.max_beams_on_processing_disk)
+    #rsyncer.transfer_files()
 
+    #out_prefix = config.observations.generate_prefix()
+    #rfi_utils = RFIUtils(config, out_prefix)
+    #rfi_utils.find_rfi()
 
-
-
-
-
+    
 
 
 
