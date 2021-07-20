@@ -1,8 +1,8 @@
 
 class Observation (object):
-	def __init__(self, source, nbeam, tobs, band, obs_number):
-		self.___source = source
-		self.__nbeam = nbeam
+	def __init__(self, source, nbeams, tobs, band, obs_number):
+		self.__source = source
+		self.__nbeams = nbeams
 		self.__tobs = tobs
 		self.__band = band
 		self.__obs_number = obs_number
@@ -13,8 +13,8 @@ class Observation (object):
 		return self.__source
 
 	@property
-	def nbeam(self):
-		return self.__nbeam
+	def nbeams(self):
+		return self.__nbeams
 
 	@property
 	def tobs(self):
@@ -42,12 +42,11 @@ if __name__ == '__main__':
 
 
 class FileLocations(object):
-	def __init__(self, tape_path, tape_machine, staging_path, staging_machine,  processing_path):
+	def __init__(self, tape_path, tape_machine, staging_path,  processing_path):
 		self.__tape_path = tape_path
 		self.__staging_path = staging_path
-		self.__processing_path = staging_path
+		self.__processing_path = processing_path
 		self.__tape_machine = tape_machine
-		self.__staging_machine = staging_machine
 
 	@property
 	def tape_path(self):
@@ -65,13 +64,11 @@ class FileLocations(object):
 	def tape_machine(self):
 		return self.__tape_machine
 
-	@property
-	def staging_machine(self):
-		return self.__staging_machine
+
 
 	def __str__(self):
-		return "tape_path {} \n tape_machine {} \n staging_path {} \n staging_machine {} \n  processing_path {} \n".format(self.tape_path, self.tape_machine, self.staging_path, 
-											self.staging_machine,  self.processing_path)
+		return "tape_path {} \n tape_machine {} \n staging_path {} \n   processing_path {} \n".format(self.tape_path, self.tape_machine, self.staging_path, 
+											  self.processing_path)
 
 	def __repr__(self):
 		return self.__str__()
@@ -138,6 +135,46 @@ class SegmentConfig(object):
 	def __repr__(self):
 		return self.__str__()
 
+
+class PulsarXConfig(object):
+	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
+		self.__singularity_image = singularity_image		
+		self.__do_zero_dm_filter = do_zero_dm_filter
+		self.__pulsarX_flags = pulsarX_flags
+		self.__fast_nbin = fast_nbin
+		self.__slow_nbin = slow_nbin
+		self.__singularity_flags = singularity_flags
+
+	@property
+	def singularity_image(self):
+		return self.__singularity_image
+
+	@property
+	def do_zero_dm_filter(self):
+		return self.__do_zero_dm_filter
+
+	@property
+	def pulsarX_flags(self):
+		return self.__pulsarX_flags	
+
+	@property
+	def fast_nbin(self):
+		return self.__fast_nbin
+
+	@property
+	def slow_nbin(self):
+		return self.__slow_nbin
+
+	@property
+	def singularity_flags(self):
+		return self.__singularity_flags
+
+	def __str__(self):
+		return "singularity_image: {} \n singularity_flags: {} \n do_zero_dm_filter: {} \n pulsarX_flags: {} \n fast_nbin: {} \n slow_nbin: {} \n".format(self.singularity_image, self.singularity_flags, self.do_zero_dm_filter, self.pulsarX_flags, self.fast_nbin, self.slow_nbin)
+
+	def __repr__(self):
+		return self.__str__()
+
 class PeasoupConfig(object):
 	def __init__(self, singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags):
 		self.__singularity_image = singularity_image
@@ -183,45 +220,6 @@ class PeasoupConfig(object):
 	def __repr__(self):
 		return self.__str__()
 
-class PulsarXConfig(object):
-	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
-		self.__singularity_image = singularity_image		
-		self.__do_zero_dm_filter = do_zero_dm_filter
-		self.__pulsarX_flags = pulsarX_flags
-		self.__fast_nbin = fast_nbin
-		self.__slow_nbin = slow_nbin
-		self.__singularity_flags = singularity_flags
-
-	@property
-	def singularity_image(self):
-		return self.__singularity_image
-
-	@property
-	def do_zero_dm_filter(self):
-		return self.__do_zero_dm_filter
-
-	@property
-	def pulsarX_flags(self):
-		return self.__pulsarX_flags	
-
-	@property
-	def fast_nbin(self):
-		return self.__fast_nbin
-
-	@property
-	def slow_nbin(self):
-		return self.__slow_nbin
-
-	@property
-	def singularity_flags(self):
-		return self.__singularity_flags
-
-	def __str__(self):
-		return "singularity_image: {} \n singularity_flags: {} \n do_zero_dm_filter: {} \n pulsarX_flags: {} \n fast_nbin: {} \n slow_nbin: {} \n".format(self.singularity_image, self.singularity_flags, self.do_zero_dm_filter, self.pulsarX_flags, self.fast_nbin, self.slow_nbin)
-
-	def __repr__(self):
-		return self.__str__()
-
 class SlurmConfig(object):
 	def __init__(self, num_simultaneous_jobs, partition, mail_user, mail_type):
 		self.__num_simultaneous_jobs = num_simultaneous_jobs
@@ -252,7 +250,8 @@ class SlurmConfig(object):
 		return self.__str__()
 
 class Config(object):
-	def __init__(self, root_output_dir, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
+	def __init__(self, root_output_dir, observations, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
+		self.__observations = observations
 		self.__root_output_dir = root_output_dir
 		self.__file_locations = file_locations
 		self.__presto_config = presto_config
@@ -263,7 +262,9 @@ class Config(object):
 		self.__beam_list = beam_list
 		self.__max_beams_on_processing_disk = max_beams_on_processing_disk
 
-
+	@property
+	def observations(self):
+		return self.__observations
 	@property
 	def file_locations(self):
 		return self.__file_locations
@@ -302,8 +303,8 @@ class Config(object):
 
 
 	def __str__(self):
-		return "\n Configurations: \n File locations: {} Presto config: {} \n PulsarX config: {} \n, Slurm config: {} \n dm_file: {} \n beam_list: {} \n \
-			max_beams_on_processing_disk: {}".format(self.file_locations,self.presto_config, self.peasoup_config, self.pulsarX_config, self.slurm_config, self.dm_file, self.beam_list, self.max_beams_on_processing_disk)
+		return "\n Configurations: \n Observations: {} \n File locations: {} Presto config: {} \n PulsarX config: {} \n,  Peasoup config: {} \n Slurm config: {} \n dm_file: {} \n beam_list: {} \n \
+			max_beams_on_processing_disk: {}".format(self.observations, self.file_locations,self.presto_config, self.pulsarX_config, self.peasoup_config, self.slurm_config, self.dm_file, self.beam_list, self.max_beams_on_processing_disk)
 
 	def __repr__(self):
 		return self.__str__()
