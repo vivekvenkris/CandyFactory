@@ -3,7 +3,7 @@ import os
 import time
 import threading
 from gen_utils import run_process
-from constants import STATUS_DICT, StatusManager
+from status_manager import StatusManager
 from ledger import Ledger
 import pathlib
 class Rsyncer(object):
@@ -50,7 +50,7 @@ class Rsyncer(object):
 			out = self.get_rsync_string("localhost", self.file_locations.staging_path)			
 
 			if self.ledger.has_beam(beam_dir_name):
-				self.logger.info("Beam {} is already processed. Skipping rsync from {} to {}".format(beam_dir_name,inp,out))
+				self.logger.debug("Beam {} is already processed. Skipping rsync from {} to {}".format(beam_dir_name,inp,out))
 				continue			
 
 			
@@ -100,7 +100,7 @@ class Rsyncer(object):
 			
 
 				if self.ledger.has_beam(beam_dir_name) and self.ledger.get_status(beam_dir_name) > self.status_manager.RSYNC_TO_STAGING:
-					self.logger.info("Beam {} is already processed. Skipping rsync from {} to {}".format(beam_dir_name,inp,out))
+					self.logger.debug("Beam {} is already processed. Skipping rsync from {} to {}".format(beam_dir_name,inp,out))
 					continue	
 				if(self.file_locations.staging_path == self.file_locations.processing_path):
 					self.logger.info("Staging Path: {} is the same as processing path: {}, skipping").format(self.file_locations.tape_path,self.file_locations.processing_path)
