@@ -87,7 +87,6 @@ class ConfigurationReader(object):
             key = chunks[0]
             val = guess_and_change_dtype(strip_quotes_and_spaces(chunks[1])) if len(chunks) > 1 else ""
 
-            print(val, type(val))
             self.dict_process_config[key] = val  #Save parameter key and value in the dictionary 
               
         config_file.close()
@@ -98,9 +97,10 @@ class ConfigurationReader(object):
                                                     self.dict_process_config['ROOT'],
                                                     self.dict_process_config['ROOT'])
 
-        pulsarX_flags = " -L {} -n {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
+        pulsarX_flags = " -L {} -n {} -nbinplan {} {}".format(self.dict_process_config['NSUBINT_FOLD'],
                                                     self.dict_process_config['NCHAN_FOLD'],
-                                                    self.dict_process_config['ADDITIONAL_PULSARX_FLAGS']) 
+                                                    self.dict_process_config['ADDITIONAL_PULSARX_FLAGS'],
+                                                    self.dict_process_config['NBIN_PLAN'])
 
 
         all_segment_configs = self.get_acc_range_and_segment_fraction()
@@ -122,8 +122,8 @@ class ConfigurationReader(object):
         peasoup_config = PeasoupConfig(self.dict_process_config['PEASOUP_IMAGE'], 
                                     singularity_flags,
                                     all_segment_configs,
-                                    self.dict_process_config['START_OFFSET'],
-                                    self.dict_process_config['END_OFFSET'],
+                                    self.dict_process_config['START_FRACTION'],
+                                    self.dict_process_config['END_FRACTION'],
                                     self.dict_process_config['ACCELSEARCH_BIRDIES'], 
                                     self.dict_process_config['PEASOUP_FLAGS']
                                     ) 
@@ -138,22 +138,24 @@ class ConfigurationReader(object):
         pulsarX_config =  PulsarXConfig( self.dict_process_config['PULSARX_IMAGE'],
                                      singularity_flags,
                                      self.dict_process_config['PULSARX_ZERODM_MATCHED_FILTER'],
-                                     pulsarX_flags, 
-                                     self.dict_process_config['NBIN_FOLD_FAST'],
-                                     self.dict_process_config['NBIN_FOLD_SLOW'])
+                                     pulsarX_flags)
 
+
+        birdie_matcher_config = BirdieMatcherConfig(self.dict_process_config['MATCHER_PERIOD_TOLERANCE'],self.dict_process_config['MATCHER_HARMONICS'])
 
     
 
         slurm_config =SlurmConfig(self.dict_process_config['N_SIMULTANEOUS_JOBS'],
-                                  self.dict_process_config['PARTITION'],
+                                  self.dict_process_config['SHORT_CPU_PARTITION'],
+                                  self.dict_process_config['LONG_CPU_PARTITION'],
+                                  self.dict_process_config['GPU_PARTITION'],
                                   self.dict_process_config['MAIL_USER'],
                                   self.dict_process_config['MAIL_TYPE']) 
 
-        beam_list = None if self.dict_process_config['BEAM_LIST'] is "" else self.dict_process_config['BEAM_LIST'].split(",")
+        beam_list = None if self.dict_process_config['BEAM_LIST'] == "" else self.dict_process_config['BEAM_LIST'].split(",")
                            
 
-        self.__config =  Config(self.dict_process_config['ROOT'], observations, filelocations, presto_config, peasoup_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
+        self.__config =  Config(self.dict_process_config['ROOT'], observations, filelocations, presto_config, peasoup_config, birdie_matcher_config, pulsarX_config, slurm_config, self.dict_process_config['DM_FILE'], 
             beam_list, int(self.dict_process_config['MAX_BEAMS_ON_PROCESSING_DISK']))
   
     @property
@@ -167,7 +169,8 @@ class ConfigurationReader(object):
 
 
 if __name__=="__main__":
-    config_reader = ConfigurationReader("config_file") 
-    
+    config = ConfigurationReader("../defaults/config_file").config 
+
+    print(config.birdie_matcher_config.period_tol)
 
      
