@@ -136,13 +136,12 @@ class SegmentConfig(object):
 		return self.__str__()
 
 
+
 class PulsarXConfig(object):
-	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags, fast_nbin, slow_nbin):
+	def __init__(self, singularity_image, singularity_flags, do_zero_dm_filter, pulsarX_flags):
 		self.__singularity_image = singularity_image		
 		self.__do_zero_dm_filter = do_zero_dm_filter
 		self.__pulsarX_flags = pulsarX_flags
-		self.__fast_nbin = fast_nbin
-		self.__slow_nbin = slow_nbin
 		self.__singularity_flags = singularity_flags
 
 	@property
@@ -158,14 +157,6 @@ class PulsarXConfig(object):
 		return self.__pulsarX_flags	
 
 	@property
-	def fast_nbin(self):
-		return self.__fast_nbin
-
-	@property
-	def slow_nbin(self):
-		return self.__slow_nbin
-
-	@property
 	def singularity_flags(self):
 		return self.__singularity_flags
 
@@ -176,15 +167,15 @@ class PulsarXConfig(object):
 		return self.__str__()
 
 class PeasoupConfig(object):
-	def __init__(self, singularity_image, singularity_flags, segment_configs, start_offset, end_offset, do_zero_acc_birdies, peasoup_flags):
+	def __init__(self, singularity_image, singularity_flags, segment_configs, start_fraction, end_fraction, do_zero_acc_birdies, peasoup_flags):
 		self.__singularity_image = singularity_image
 		self.__segment_configs = segment_configs
-		self.__start_offset = start_offset
+		self.__start_fraction = start_fraction
 		self.__segment_configs = segment_configs
 		self.__do_zero_acc_birdies = do_zero_acc_birdies
 		self.__peasoup_flags = peasoup_flags
 		self.__singularity_flags = singularity_flags
-		self.__end_offset = end_offset
+		self.__end_fraction = end_fraction
 
 	@property
 	def singularity_image(self):
@@ -199,12 +190,12 @@ class PeasoupConfig(object):
 		return self.__do_zero_acc_birdies
 
 	@property
-	def start_offset(self):
-		return self.__start_offset
+	def start_fraction(self):
+		return self.__start_fraction
 
 	@property
-	def end_offset(self):
-		return self.__end_offset
+	def end_fraction(self):
+		return self.__end_fraction
 
 	@property
 	def peasoup_flags(self):
@@ -215,15 +206,30 @@ class PeasoupConfig(object):
 		return self.__singularity_flags
 	
 	def __str__(self):
-		return "singularity_image: {} \n singularity_flags: {} \n segment_configs: {} \n start_offset: {} \n end_offset: {} \n do_zero_acc_birdies: {} \n peasoup_flags: {} \n".format(self.singularity_image, self.singularity_flags, self.segment_configs, self.start_offset, self.end_offset, self.do_zero_acc_birdies, self.peasoup_flags)
+		return "singularity_image: {} \n singularity_flags: {} \n segment_configs: {} \n start_fraction: {} \n end_fraction: {} \n do_zero_acc_birdies: {} \n peasoup_flags: {} \n".format(self.singularity_image, self.singularity_flags, self.segment_configs, self.start_fraction, self.end_fraction, self.do_zero_acc_birdies, self.peasoup_flags)
 
 	def __repr__(self):
 		return self.__str__()
 
+class BirdieMatcherConfig(object):
+	def __init__(self,period_tolerance, matcher_harmonics):
+		self.__period_tol = period_tolerance
+		self.__harmonics = matcher_harmonics;
+
+	@property
+	def period_tol(self):
+		return self.__period_tol
+
+	@property
+	def harmonics(self):
+		return self.__harmonics
+
 class SlurmConfig(object):
-	def __init__(self, num_simultaneous_jobs, partition, mail_user, mail_type):
+	def __init__(self, num_simultaneous_jobs, short_cpu_partition, long_cpu_partition, gpu_partition, mail_user, mail_type):
 		self.__num_simultaneous_jobs = num_simultaneous_jobs
-		self.__partition = partition
+		self.__long_cpu_partition = long_cpu_partition
+		self.__short_cpu_partition = short_cpu_partition
+		self.__gpu_partition = gpu_partition
 		self.__mail_type = mail_type
 		self.__mail_user = mail_user
 
@@ -232,8 +238,17 @@ class SlurmConfig(object):
 		return self.__num_simultaneous_jobs
 
 	@property
-	def partition(self):
-		return self.__partition
+	def long_cpu_partition(self):
+		return self.__long_cpu_partition
+
+	@property
+	def short_cpu_partition(self):
+		return self.__short_cpu_partition
+
+	@property
+	def gpu_partition(self):
+		return self.__gpu_partition	
+
 
 	@property
 	def mail_type(self):
@@ -250,7 +265,7 @@ class SlurmConfig(object):
 		return self.__str__()
 
 class Config(object):
-	def __init__(self, root_output_dir, observations, file_locations, presto_config, peasoup_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
+	def __init__(self, root_output_dir, observations, file_locations, presto_config, peasoup_config, birdie_matcher_config, pulsarX_config, slurm_config, dm_file, beam_list, max_beams_on_processing_disk):
 		self.__observations = observations
 		self.__root_output_dir = root_output_dir
 		self.__file_locations = file_locations
@@ -261,6 +276,7 @@ class Config(object):
 		self.__dm_file = dm_file
 		self.__beam_list = beam_list
 		self.__max_beams_on_processing_disk = max_beams_on_processing_disk
+		self.__birdie_matcher_config = birdie_matcher_config
 
 	@property
 	def observations(self):
@@ -288,6 +304,10 @@ class Config(object):
 	@property
 	def slurm_config(self):
 		return self.__slurm_config
+
+	@property
+	def birdie_matcher_config(self):
+		return self.__birdie_matcher_config
 
 	@property
 	def dm_file(self):
