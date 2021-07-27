@@ -40,7 +40,7 @@ class Logger(object):
             Logger()
         return Logger.__instance
 
-    def __init__(self, path="", file_name="uwl.log", file_level=None):
+    def __init__(self, path="", file_name=None, file_level=None):
         """ Virtually private constructor. """
         if Logger.__instance != None:
             raise Exception("This class is a singleton!")
@@ -50,22 +50,28 @@ class Logger(object):
         logger.setLevel(logging.DEBUG if file_level is None else file_level)
         logger.propagate = False
 
-        file_handler = logging.FileHandler(file_name)
-        file_handler.setFormatter(formatter)
-        file_handler.setLevel(logging.DEBUG if file_level is None else file_level)
+
+        if file_name is not None:
+
+            file_handler = logging.FileHandler(file_name)
+            file_handler.setFormatter(formatter)
+            file_handler.setLevel(logging.DEBUG if file_level is None else file_level)
+            logger.addHandler(file_handler)
+
+            if os.path.exists(os.path.join(path, file_name)):
+                with open(os.path.join(path, file_name), 'a') as f:
+                    f.write(30 * "#")
+                    f.write("\n")
+            logger.info("File handler created")
+
 
         stream_handler = logging.StreamHandler()
         stream_handler.setLevel(logging.INFO)
         stream_handler.setFormatter(formatter)
 
-        logger.addHandler(file_handler)
         logger.addHandler(stream_handler)
 
-        if os.path.exists(os.path.join(path, file_name)):
-            with open(os.path.join(path, file_name), 'a') as f:
-                f.write(30 * "#")
-                f.write("\n")
-        logger.info("File handler created")
+
 
         self._logger = logger
 
