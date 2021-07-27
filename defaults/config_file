@@ -16,7 +16,8 @@ NBEAMS 		288         # Numnber of beams to process for a given epoch
 OBS_NO 		02          # Observation number for paticular source
 BAND  		L           # Frequency band os observation (e.g. UHF, L-Band, S-Band)   
 BEAM_LIST  	0,5,6       # Comma separated values of beam numbers to process   
-TOBS 		18000
+TOBS 		18000	
+
 
 
 #BIRDIES and ZAPMASKS
@@ -48,16 +49,22 @@ N_SUBBANDS 			256              # Number of Subbands for DDplan
 DM_FILE 			/dmfile/dm.file    # Path to PEASOUP compatible file with list of DM trials (Use if DDplan not applied)
 #ACC_MIN 			-25                # Min acceleration 
 #ACC_MAX 			25                 # Max acceleration
-ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5 # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
-START_OFFSET        0       			# Ignore n fraction of data at start 
-END_OFFSET          0             # Ignore n fraction of data from end of file                  
+ACC_SEGMENT_LIST 			-25:25:full, -100:100:0.5, -20:20:0.15 # Specify comma separated acceleration ranges with corresponding segment fraction of observation. e.g. -10:10:0.1 implies search 10 % segment lengths across observation from -10 to 10 ms^-2.    
+START_FRACTION        0       			# Ignore n fraction of data at start 
+END_FRACTION          0             # Ignore n fraction of data from end of file                  
 PEASOUP_FLAGS            "-m 8.5 -n 3 --limit 1000"            # Other flags for peasoup 
+
+
+#BIRDIE_MATCHER
+
+MATCHER_PERIOD_TOLERANCE	5e-4 # ratio 
+MATCHER_HARMONICS	8
+
 
 
 #PulsarX
 NSUBINT_FOLD 			32                  # Number of subints in folded archive
-NBIN_FOLD_FAST   		64                  # Number of bins in folded profile for fast candidates (P < 100 ms)
-NBIN_FOLD_SLOW   		128                 # Number of bins in folded profile for slow candidates (P > 100 ms)  
+NBIN_PLAN				"0.05 64 0.1 128"
 NCHAN_FOLD  			32                  # Number of channels in folded archive
 ADDITIONAL_PULSARX_FLAGS		"--clfd 2.0  --plotx --rfi"           		    # Additional flags for pulsarX folding 
 
@@ -70,7 +77,9 @@ PULSARX_IMAGE 			/pulsarx   # Path to the PulsarX singularity image
 
 #SLURM INPUTS
 N_SIMULTANEOUS_JOBS 		15            # Number if simultaneous jobs to run with job array  
-PARTITION 			short.q                 # Type of queue to use
+SHORT_CPU_PARTITION	    short.q   # Type of queue to use for CPU jobs like RFI excision
+LONG_CPU_PARTITION 		long.q                 # Type of queue to use for long CPU jobs like folding
+GPU_PARTITION			gpu6cores.q 	# Type of queue to use for GPU jobs (i.e. peasoup)
 MAIL_USER 			prajwalvp@mpifr-bonn.mpg.de    # EMAIL ID to send notification
 MAIL_TYPE 			ALL                  # Type of job status to send via EMAIL (e.g. ALL, FAIL, SUCCESS)
 
