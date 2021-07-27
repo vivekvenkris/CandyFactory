@@ -1,18 +1,15 @@
 from gen_utils import run_with_singularity
-from constants import STATUS_DICT
+from status_manager import StatusManager
+from search_operations import SearchOperations
 from ledger import Ledger
 import glob
 import os
-from constants import StatusManager
+
 import re
-class RFIUtils(object):
+class RfiFinder(SearchOperations):
 
 	def __init__(self, config, out_prefix):
-		self.config = config
-		self.out_prefix = out_prefix
-		self.ledger = Ledger.getInstance()
-		self.status_manager = StatusManager.getInstance()
-
+		super().__init__(config, out_prefix)
 
 	def do_accelsearch(self, input_file, beam_name):
 
@@ -81,19 +78,27 @@ class RFIUtils(object):
 
 
 
-	def find_rfi(self):
+	def find_rfi(self, beam_name):
 
-		beam_list = self.ledger.get_beams_for_status(self.status_manager.RSYNC_TO_PROCESSING)
+		file_name = glob.glob(os.path.join(self.config.file_locations.processing_path, beam_name)+ "/*.fil")[0]
+		self.run_filtool(file_name, beam_name)
+		self.ledger.update_status(beam_name, self.status_manager.FILTOOLS)
 
-		for beam_name in beam_list:
-			file_name = glob.glob(os.path.join(self.config.file_locations.processing_path, beam_name)+ "/*.fil")[0]
-			self.run_filtool(file_name, beam_name)
-			self.ledger.update_status(beam_name, self.status_manager.FILTOOLS)
-
-			self.run_rfifind(file_name, beam_name)
-			self.ledger.update_status(beam_name, self.status_manager.RFIFIND_MASK)
+		self.run_rfifind(file_name, beam_name)
+		self.ledger.update_status(beam_name, self.status_manager.RFIFIND_MASK)
 
 
-			self.do_accelsearch(file_name, beam_name)
-			self.ledger.update_status(beam_name, self.status_manager.ZERO_DM_ACCELSEARCH)
+		self.do_accelsearch(file_name, beam_name)
+		self.ledger.update_status(beam_name, self.status_manager.ZERO_DM_ACCELSEARCH)
+
+
+	def run(self, beam_name, search_type):
+	    self.find_rfi(self, beam_name)
+
+
+			
+
+
+
+		
 
